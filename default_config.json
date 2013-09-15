@@ -1,0 +1,8 @@
+{
+    "db": {
+        "host": "mysql.org",
+        "user": "root",
+        "password": "password",
+        "database": "reader"
+    }
+}

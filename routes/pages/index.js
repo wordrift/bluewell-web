@@ -9,9 +9,11 @@ exports.addRoutes = function(app,prefix)
 
 function index(req, res)
 {
-    res.redirect('/home');
+    res.redirect('/reader');
 }
 function reader(req,res)
 {
-    res.render('reader');
+    var story_id = req.param('story_id');
+    var params = { story_id: story_id };
+    res.render('reader',params);
 }

@@ -28,7 +28,7 @@ exports.queryFromPool = function(sql,values,callback)
             connection.query(sql,values,function(err, result)
             {
                 callback(err,result);
-                connection.end();
+                connection.release();
             });
         }
     });

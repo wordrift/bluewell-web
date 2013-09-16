@@ -19,12 +19,6 @@
 		2D3D040A17E6760500458D4C /* reader.less */ = {isa = PBXFileReference; lastKnownFileType = text; path = reader.less; sourceTree = "<group>"; };
 		2D3D041217E6760500458D4C /* home.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = home.js; sourceTree = "<group>"; };
 		2D3D041317E6760500458D4C /* string.utils.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = string.utils.js; sourceTree = "<group>"; };
-		2D3D041517E6760500458D4C /* app_list.ejs */ = {isa = PBXFileReference; lastKnownFileType = text; path = app_list.ejs; sourceTree = "<group>"; };
-		2D3D041617E6760500458D4C /* app_ver_body.ejs */ = {isa = PBXFileReference; lastKnownFileType = text; path = app_ver_body.ejs; sourceTree = "<group>"; };
-		2D3D041717E6760500458D4C /* app_ver_list.ejs */ = {isa = PBXFileReference; lastKnownFileType = text; path = app_ver_list.ejs; sourceTree = "<group>"; };
-		2D3D041817E6760500458D4C /* asg_body.ejs */ = {isa = PBXFileReference; lastKnownFileType = text; path = asg_body.ejs; sourceTree = "<group>"; };
-		2D3D041917E6760500458D4C /* env_body.ejs */ = {isa = PBXFileReference; lastKnownFileType = text; path = env_body.ejs; sourceTree = "<group>"; };
-		2D3D041A17E6760500458D4C /* env_list.ejs */ = {isa = PBXFileReference; lastKnownFileType = text; path = env_list.ejs; sourceTree = "<group>"; };
 		2D3D042017E6760500458D4C /* reader.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = reader.html; sourceTree = "<group>"; };
 		2D3D042117E677EA00458D4C /* global_inc.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = global_inc.js; sourceTree = "<group>"; };
 		2D3D042217E6780700458D4C /* story.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = story.js; sourceTree = "<group>"; };
@@ -112,12 +106,6 @@
 		2D3D041417E6760500458D4C /* templates */ = {
 			isa = PBXGroup;
 			children = (
-				2D3D041517E6760500458D4C /* app_list.ejs */,
-				2D3D041617E6760500458D4C /* app_ver_body.ejs */,
-				2D3D041717E6760500458D4C /* app_ver_list.ejs */,
-				2D3D041817E6760500458D4C /* asg_body.ejs */,
-				2D3D041917E6760500458D4C /* env_body.ejs */,
-				2D3D041A17E6760500458D4C /* env_list.ejs */,
 			);
 			path = templates;
 			sourceTree = "<group>";

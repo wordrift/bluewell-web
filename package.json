@@ -14,6 +14,7 @@
     "memcached": "*",
     "underscore": "*",
     "jquery": "*",
-    "moment": "*"
+    "moment": "*",
+    "escape-html": "*"
   }
 }

@@ -8,8 +8,15 @@ exports.get_story = function(req, res)
     res.header("Cache-Control", "no-cache, no-store, must-revalidate");
     res.header("Pragma", "no-cache");
     
-    var sql = 'SELECT * FROM story WHERE story_id = ?';
-    db.queryFromPoolWithConnection(sql,story_id,function(err,results,connection)
+    var sql = "SELECT * FROM story ";
+    sql += " NATURAL JOIN story_author ";
+    sql += " WHERE story.story_id = ?";
+    
+    var options = {
+        sql: sql,
+        nestTables: true,
+    };
+    db.queryFromPoolWithConnection(options,story_id,function(err,results,connection)
     {
         if( err )
         {
@@ -19,7 +26,12 @@ exports.get_story = function(req, res)
         {
             if( results.length > 0 )
             {
-                var story = results[0];
+                var story = results[0].story;
+                story.author_list = [];
+                for( var i = 0 ; i < results.length ; ++i )
+                {
+                    story.author_list.push(results[i].story_author.author);
+                }
                 res.send(story);
             }
             else

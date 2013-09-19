@@ -16,8 +16,8 @@
 		2D3D03FA17E6743800458D4C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		2D3D040017E6760500458D4C /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
 		2D3D040217E6760500458D4C /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
-		2D3D040A17E6760500458D4C /* reader.less */ = {isa = PBXFileReference; lastKnownFileType = text; path = reader.less; sourceTree = "<group>"; };
-		2D3D041217E6760500458D4C /* home.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = home.js; sourceTree = "<group>"; };
+		2D3D040A17E6760500458D4C /* reader.less */ = {isa = PBXFileReference; lastKnownFileType = text; path = reader.less; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.css; };
+		2D3D041217E6760500458D4C /* reader.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = reader.js; sourceTree = "<group>"; };
 		2D3D041317E6760500458D4C /* string.utils.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = string.utils.js; sourceTree = "<group>"; };
 		2D3D042017E6760500458D4C /* reader.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = reader.html; sourceTree = "<group>"; };
 		2D3D042117E677EA00458D4C /* global_inc.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = global_inc.js; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 		2D3D040C17E6760500458D4C /* js */ = {
 			isa = PBXGroup;
 			children = (
-				2D3D041217E6760500458D4C /* home.js */,
+				2D3D041217E6760500458D4C /* reader.js */,
 				2D3D041317E6760500458D4C /* string.utils.js */,
 			);
 			path = js;
@@ -124,7 +124,7 @@
 		2D3D03EE17E6730800458D4C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 			};
 			buildConfigurationList = 2D3D03F117E6730800458D4C /* Build configuration list for PBXProject "bluewell-web" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -145,6 +145,7 @@
 		2D3D03F217E6730800458D4C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};

@@ -59,7 +59,7 @@ function migrate(req,res)
     {
         if( err )
         {
-            res.send(err);
+            res.send(JSON.stringify(err,null,"\t"));
         }
         else
         {
@@ -67,14 +67,13 @@ function migrate(req,res)
             {
                 var old_story = results[i];
                 
-                old_story.text = clean_text(old_story.text);
-                
                 res.write("story: " + i + ", title: " + old_story.title + "\n");
 
                 migrateStory(res,old_story,next);
             },
             function(err, users)
             {
+                //res.write(JSON.stringify(g_tags,null,"\t"));
                 res.write("\n");
                 res.write("done done\n\n");
                 res.end();
@@ -83,41 +82,6 @@ function migrate(req,res)
     });
 }
 
-function clean_text(text)
-{
-    text = text.replace(/[\s\r\n]+/g,' ');
-
-    var regex = /<\s*(\/?)\s*([^>\s]*)[^>]*>/g;
-
-    var replaces = [];
-
-    match = regex.exec(text);
-    while (match != null) {
-        // matched text: match[0]
-        // match start: match.index
-        // capturing group n: match[n]
-        
-        if( match[2] == 'p' )
-        {
-            //console.log("canonicalizing: " + match[0] + "\tmatch12: " + match[1] + match[2])
-            replaces.push({search: match[0],replace: "<" + match[1] + match[2] + ">" });
-        }
-        else
-        {
-            //console.log("removing: " + match[0] + "\tmatch12: " + match[1] + match[2])
-            replaces.push({search: match[0],replace: "" });
-        }
-        match = regex.exec(text);
-    }
-    
-    for( var i = 0 ; i < replaces.length ; ++i )
-    {
-        var opt = replaces[i];
-        text = text.replace(opt.search,opt.replace);
-    }
-    
-    return text;
-}
 
 function clean_int(val)
 {
@@ -148,7 +112,8 @@ function migrateStory(res,old_story,next)
         language: old_story.language,
         title: old_story.title,
         subtitle: old_story.subtitle,
-        text: old_story.text,
+        text: cleanHTML(old_story.text),
+        author_notes: cleanHTML(old_story.creatorInfo),
         word_count: old_story.wordCount,
         source_publish_date: old_story['firstPub.date'],
         source_url: old_story['firstPub.url'],

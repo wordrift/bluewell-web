@@ -82,6 +82,7 @@ function renderStory()
     html += "<div class='author_notes'>";
     html += story.author_notes;
     html += "</div>";
+    html += "<div class='spacer'></div>";
     
     $('#story_body').html(html);
 }
@@ -90,14 +91,20 @@ function clickReaderRight()
 {
     var scroll_top = $('#story_body').scrollTop();
     var new_top = scroll_top + 440;
-    $('#story_body').scrollTop(new_top);
+    
+    var scroll_height = $('#story_body').get(0).scrollHeight;
+    
+    if( new_top + 440 < scroll_height )
+    {
+        $('#story_body').animate({ scrollTop:new_top },150);
+    }
 }
 
 function clickReaderLeft()
 {
     var scroll_top = $('#story_body').scrollTop();
     var new_top = scroll_top - 440;
-    $('#story_body').scrollTop(new_top);
+    $('#story_body').animate({ scrollTop:new_top },150);
 }
 
 function clickReaderCenter()

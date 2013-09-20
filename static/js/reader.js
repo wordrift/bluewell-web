@@ -109,4 +109,22 @@ function clickReaderLeft()
 
 function clickReaderCenter()
 {
+    if( $('#bottom_bar').is(':visible') )
+    {
+        $('#bottom_bar').fadeOut();
+    }
+    else if( $('#text_settings').is(':visible') )
+    {
+        $('#text_settings').fadeOut();
+    }
+    else
+    {
+        $('#bottom_bar').fadeIn();
+    }
+}
+
+function clickTextSettings()
+{
+    $('#bottom_bar').hide();
+    $('#text_settings').fadeIn();
 }

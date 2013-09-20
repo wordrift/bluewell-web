@@ -68,3 +68,107 @@ body {
     width: 32%;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
+
+#bottom_bar {
+    display: none;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 93px;
+    background: whitesmoke;
+    
+    .icon_bar {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: 43px;
+        border-top: 1px solid #bbb;
+        border-bottom: 1px solid #bbb;
+        font-size: 0px;
+        text-align: center;
+        
+        .icon {
+            display: inline-block;
+            width: 25%;
+            height: 43px;
+            font-size: 0px;
+            text-align: center;
+            vertical-align: top;
+            
+            .text {
+                display: inline-block;
+                padding-top: 10px;
+                color: #007Df5;
+                font-size: 20px;
+                font-family: 'Ariel', serif;
+                vertical-align: top;
+            }
+        }
+    }
+}
+
+#text_settings {
+    display: none;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 167px;
+    background: whitesmoke;
+    
+    .font_size {
+        height: 57px;
+        font-size: 0px;
+        text-align: center;
+        border-top: 1px solid #bbb;
+        
+        .button {
+            display: inline-block;
+            margin-top: 7px;
+            margin-left: 5px;
+            margin-right: 5px;
+            height: 41px;
+            width: 135px;
+            background: #eee;
+            text-align: center;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            vertical-align: top;
+            
+            .text {
+                display: inline-block;
+                padding-top: 10px;
+                padding-left: 10px;
+                padding-right: 10px;
+                color: #333;
+                font-size: 20px;
+                font-family: 'Ariel', serif;
+                vertical-align: top;
+            }
+            &.smaller .text {
+                padding-top: 12px;
+                font-size: 16px;
+            }
+            &.bigger .text {
+                padding-top: 7px;
+                font-size: 24px;
+            }
+            .arrow {
+                vertical-align: top;
+            }
+        }
+    }
+    .theme {
+        height: 107px;
+        font-size: 0px;
+        white-space: nowrap;
+        overflow-x: auto;
+        border-top: 1px solid #bbb;
+        border-bottom: 1px solid #bbb;
+    }
+}
+
+
+

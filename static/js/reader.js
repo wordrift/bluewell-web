@@ -1,4 +1,8 @@
 
+var MIN_FONT_SIZE = 6;
+var MAX_FONT_SIZE = 26;
+
+
 var IS_IPAD = window.navigator.userAgent.match(/iPad/i) != null;
 var IS_IPHONE = window.navigator.userAgent.match(/iPhone/i) != null;
 var IS_IPOD = window.navigator.userAgent.match(/iPod/i) != null;
@@ -98,13 +102,34 @@ function clickReaderRight()
     {
         $('#story_body').animate({ scrollTop:new_top },150);
     }
+    readerHideOverlays(true);
 }
-
 function clickReaderLeft()
 {
     var scroll_top = $('#story_body').scrollTop();
     var new_top = scroll_top - 440;
     $('#story_body').animate({ scrollTop:new_top },150);
+    readerHideOverlays(true);
+}
+
+function readerHideOverlays(animate)
+{
+    if( animate )
+    {
+        if( $('#text_settings').is(':visible') )
+        {
+            $('#text_settings').fadeOut();
+        }
+        if( $('#bottom_bar').is(':visible') )
+        {
+            $('#bottom_bar').fadeOut();
+        }
+    }
+    else
+    {
+        $('#text_settings').hide();
+        $('#bottom_bar').hide();
+    }
 }
 
 function clickReaderCenter()
@@ -128,3 +153,26 @@ function clickTextSettings()
     $('#bottom_bar').hide();
     $('#text_settings').fadeIn();
 }
+
+function clickFontSmaller()
+{
+    var old_size = $('#story_body').css('font-size');
+    old_size = parseInt(old_size);
+    var new_size = old_size - 1;
+    if( new_size > MIN_FONT_SIZE )
+    {
+        $('#story_body').css('font-size',new_size + 'px');
+    }
+}
+function clickFontLarger()
+{
+    var old_size = $('#story_body').css('font-size');
+    old_size = parseInt(old_size);
+    var new_size = old_size + 1;
+    if( new_size < MAX_FONT_SIZE )
+    {
+        $('#story_body').css('font-size',new_size + 'px');
+    }
+}
+
+

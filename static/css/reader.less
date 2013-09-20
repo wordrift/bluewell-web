@@ -13,6 +13,7 @@ body {
     margin-bottom: 10px;
     height: 440px;
     overflow: hidden;
+    font-size: 16px;
     
     .story_header {
         padding-bottom: 10px;
@@ -100,7 +101,7 @@ body {
             .text {
                 display: inline-block;
                 padding-top: 10px;
-                color: #007Df5;
+                color: #007DF5;
                 font-size: 20px;
                 font-family: 'Ariel', serif;
                 vertical-align: top;
@@ -135,28 +136,43 @@ body {
             text-align: center;
             border: 1px solid #bbb;
             border-radius: 5px;
+            font-size: 0px;
+            white-space: nowrap;
             vertical-align: top;
             
             .text {
                 display: inline-block;
                 padding-top: 10px;
-                padding-left: 10px;
-                padding-right: 10px;
+                padding-left: 5px;
+                padding-right: 5px;
                 color: #333;
-                font-size: 20px;
                 font-family: 'Ariel', serif;
                 vertical-align: top;
             }
             &.smaller .text {
-                padding-top: 12px;
+                padding-top: 11px;
                 font-size: 16px;
             }
-            &.bigger .text {
+            &.larger .text {
                 padding-top: 7px;
-                font-size: 24px;
+                font-size: 22px;
             }
             .arrow {
+                display: inline-block;
                 vertical-align: top;
+                margin-top: 18px;
+                width: 0;
+                height: 0;
+            }
+            &.smaller .arrow {
+                border-left: 4px solid transparent;
+                border-right: 4px solid transparent;
+                border-top: 7px solid #007DF5;
+            }
+            &.larger .arrow {
+                border-left: 4px solid transparent;
+                border-right: 4px solid transparent;
+                border-bottom: 7px solid #007DF5;
             }
         }
     }

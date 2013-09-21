@@ -209,7 +209,7 @@ body {
                 width: 66px;
                 height: 66px;
                 border-radius: 50%;
-                border: 1px solid whitesmoke;
+                border: 1px solid transparent;
                 
                 .inner {
                     margin-top: 3px;
@@ -250,9 +250,26 @@ body {
 .theme_palatino #story_body {
     font-family: "Palatino", serif;
 }
-.theme_midnight #story_body {
-    font-family: "Georgia", serif;
-    color: white;
+body.theme_midnight {
     background: black;
-}
 
+    #story_body {
+        font-family: "Georgia", serif;
+        color: white;
+        background: black;
+    }
+    #bottom_bar {
+        background: black;
+    }
+    #text_settings {
+        background: black;
+        
+        .font_size .button {
+            background: black;
+            
+            .text {
+                color: white;
+            }
+        }
+    }
+}

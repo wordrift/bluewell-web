@@ -188,15 +188,73 @@ body {
             }
         }
     }
-    .theme {
+    .themes {
         height: 107px;
         font-size: 0px;
         white-space: nowrap;
         overflow-x: auto;
         border-top: 1px solid #bbb;
         border-bottom: 1px solid #bbb;
+        
+        .item {
+            display: inline-block;
+            width: 95px;
+            text-align: center;
+            vertical-align: top;
+            
+            .outer {
+                margin-top: 10px;
+                margin-left: auto;
+                margin-right: auto;
+                width: 66px;
+                height: 66px;
+                border-radius: 66px;
+                border: 1px solid whitesmoke;
+                
+                .inner {
+                    margin-top: 3px;
+                    margin-left: 3px;
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 60px;
+                    overflow: hidden;
+                    
+                    img {
+                        width: 60px;
+                        border-radius: 60px;
+                        overflow: hidden;
+                    }
+                }
+            }
+            &.active .outer {
+                border: 1px solid #3B6BAC;
+            }
+            .label {
+                margin-top: 6px;
+                color: #3B6BAC;
+                font-size: 12px;
+                font-family: Helvetica, sans-serif;
+                text-transform: uppercase;
+            }
+        }
     }
 }
 
-
+.theme_standard #story_body {
+    font-family: "Georgia", serif;
+}
+.theme_helvetica #story_body {
+    font-family: "Helvetica", sans-serif;
+}
+.theme_baskerville #story_body {
+    font-family: "Baskerville", serif;
+}
+.theme_palatino #story_body {
+    font-family: "Palatino", serif;
+}
+.theme_midnight #story_body {
+    font-family: "Georgia", serif;
+    color: white;
+    background: black;
+}
 

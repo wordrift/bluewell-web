@@ -37,6 +37,7 @@ var IS_OLD_IE = false;
 })();
 
 
+var g_current_theme = 'theme_standard';
 var g_story_data = {};
 
 function readerReady()
@@ -56,6 +57,7 @@ function readerReady()
             window.alert("Failed to get story data.");
         }
     });
+    clickTheme(g_current_theme);
 }
 $(document).ready(readerReady);
 
@@ -182,8 +184,6 @@ function clickFontLarger()
 
 function readerFixMargins()
 {
-    var scroll_top = $('#story_body').scrollTop();
-    
     var body_height = $('#story_body').height();
     var body_margin_top = parseInt( $('#story_body').css('margin-top') );
     var body_margin_bottom = parseInt( $('#story_body').css('margin-bottom') );
@@ -200,6 +200,8 @@ function readerFixMargins()
     
     var used_height = lines * line_height;
     $('#story_body').css('height',used_height + 'px');
+
+    var scroll_top = $('#story_body').scrollTop();
     var new_scroll_top = Math.floor(scroll_top / used_height) * used_height;
     $('#story_body').scrollTop(new_scroll_top);
     
@@ -219,4 +221,15 @@ function readerFixMargins()
     $('#story_body .story_header').css('padding-bottom',header_padding + 'px');
 }
 
+function clickTheme(new_theme)
+{
+    var old_theme = g_current_theme;
+    $('body').removeClass(old_theme);
+    $('body').addClass(new_theme);
+    g_current_theme = new_theme;
+    
+    $('#text_settings .themes .item').removeClass('active');
+    var sel = "#text_settings .themes .item.{0}".format(new_theme);
+    $(sel).addClass('active');
+}
 

@@ -36,6 +36,23 @@ var IS_OLD_IE = false;
     }
 })();
 
+var THEME_METRICS = {
+    theme_standard: {
+        line_height_ratio: 1.5
+    },
+    theme_helvetica: {
+        line_height_ratio: 1.375
+    },
+    theme_baskerville: {
+        line_height_ratio: 1.4
+    },
+    theme_palatino: {
+        line_height_ratio: 1.5
+    },
+    theme_midnight: {
+        line_height_ratio: 1.5
+    }
+};
 
 var g_current_theme = 'theme_standard';
 var g_story_data = {};
@@ -58,6 +75,7 @@ function readerReady()
         }
     });
     clickTheme(g_current_theme);
+    readerFixMetrics();
 }
 $(document).ready(readerReady);
 
@@ -167,7 +185,7 @@ function clickFontSmaller()
     if( new_size > MIN_FONT_SIZE )
     {
         $('#story_body').css('font-size',new_size + 'px');
-        readerFixMargins();
+        readerFixMetrics();
     }
 }
 function clickFontLarger()
@@ -178,12 +196,14 @@ function clickFontLarger()
     if( new_size < MAX_FONT_SIZE )
     {
         $('#story_body').css('font-size',new_size + 'px');
-        readerFixMargins();
+        readerFixMetrics();
     }
 }
 
-function readerFixMargins()
+function readerFixMetrics()
 {
+    var metrics = THEME_METRICS[g_current_theme];
+
     var body_height = $('#story_body').height();
     var body_margin_top = parseInt( $('#story_body').css('margin-top') );
     var body_margin_bottom = parseInt( $('#story_body').css('margin-bottom') );
@@ -193,7 +213,7 @@ function readerFixMargins()
     var available_height = total_height - ( 2 * MIN_MARGIN );
     
     var font_size = parseInt( $('#story_body').css('font-size') );
-    var line_height = Math.ceil( font_size * 1.375 );
+    var line_height = Math.ceil( font_size * metrics.line_height_ratio );
     $('#story_body').css('line-height',line_height + 'px');
     
     var lines = Math.floor( available_height / line_height );

@@ -182,6 +182,8 @@ function clickFontLarger()
 
 function readerFixMargins()
 {
+    var scroll_top = $('#story_body').scrollTop();
+    
     var body_height = $('#story_body').height();
     var body_margin_top = parseInt( $('#story_body').css('margin-top') );
     var body_margin_bottom = parseInt( $('#story_body').css('margin-bottom') );
@@ -198,6 +200,8 @@ function readerFixMargins()
     
     var used_height = lines * line_height;
     $('#story_body').css('height',used_height + 'px');
+    var new_scroll_top = Math.floor(scroll_top / used_height) * used_height;
+    $('#story_body').scrollTop(new_scroll_top);
     
     var extra_margin = available_height - used_height;
     

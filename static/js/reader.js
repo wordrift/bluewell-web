@@ -108,6 +108,7 @@ function renderStory()
     html += "<div class='spacer'></div>";
     
     $('#story_body').html(html);
+    readerFixMetrics();
 }
 
 function clickReaderRight()

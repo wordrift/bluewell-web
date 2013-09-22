@@ -180,7 +180,8 @@
             ev.preventDefault();
             this.container.stop(true);
             this.mouseDown = true;
-            
+            this.startScreenX = ev.pageX;
+            this.startScreenY = ev.pageY;
             this.handleMoveStart(ev.pageX);
         },
         onMouseMove: function(ev, delta, deltaX, deltaY) {

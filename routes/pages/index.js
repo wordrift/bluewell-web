@@ -16,7 +16,7 @@ function reader(req,res)
     var story_id = req.param('story_id');
     if( !story_id )
     {
-        story_id = 1573;
+        story_id = 1624;
     }
     var params = { story_id: story_id };
     res.render('reader',params);

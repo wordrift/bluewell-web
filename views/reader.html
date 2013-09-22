@@ -18,17 +18,17 @@
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js" type="text/javascript"></script>
     <script src="/js/string.utils.js" type="text/javascript"></script>
 
+    <script src="/js/reader-swipe.js" type="text/javascript"></script>
     <script src="/js/reader.js" type="text/javascript"></script>
     <script type="text/javascript">
         var g_story_id = <%= story_id %>;
     </script>
 </head>
 <body>
-    <div id='story_body'>
+    <div id='story_body_container'>
+        <div id='story_body'>
+        </div>
     </div>
-    <div id='left_click' onclick="clickReaderLeft();"></div>
-    <div id='center_click' onclick="clickReaderCenter();"></div>
-    <div id='right_click' onclick="clickReaderRight();"></div>
     <div id='top_bar'>
     </div>
     <div id='bottom_bar'>

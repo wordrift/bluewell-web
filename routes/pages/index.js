@@ -9,7 +9,7 @@ exports.addRoutes = function(app,prefix)
 
 function index(req, res)
 {
-    res.redirect('/reader');
+    res.render('index');
 }
 function reader(req,res)
 {

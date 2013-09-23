@@ -4,5 +4,10 @@
         "user": "root",
         "password": "password",
         "database": "reader"
+    },
+    "fb": {
+        "app_id": "INSERT",
+        "app_secret": "INSERT",
+        "callback_url": "INSERT"
     }
 }

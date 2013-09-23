@@ -89,7 +89,9 @@ body {
             color: black;
             font-size: 18px;
             font-family: 'Helvetica Neue','Helvetica',sans-serif;
-            font-weight: lighter;
+            @media (-webkit-min-device-pixel-ratio: 2) {
+                font-weight: lighter;
+            }
             text-align: left;
             overflow: hidden;
             text-overflow: ellipsis;

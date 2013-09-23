@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		2D22A63417EF58B000E19532 /* reader-swipe.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "reader-swipe.js"; sourceTree = "<group>"; };
+		2D22A63517EFF3B900E19532 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		2D3D03F417E6743800458D4C /* app.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = app.js; sourceTree = "<group>"; };
 		2D3D03F517E6743800458D4C /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		2D3D03F617E6743800458D4C /* db.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = db.js; sourceTree = "<group>"; };
@@ -115,6 +116,7 @@
 		2D3D041B17E6760500458D4C /* views */ = {
 			isa = PBXGroup;
 			children = (
+				2D22A63517EFF3B900E19532 /* index.html */,
 				2D3D042017E6760500458D4C /* reader.html */,
 			);
 			path = views;

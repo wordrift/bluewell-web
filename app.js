@@ -10,6 +10,27 @@ var path = require('path');
 var config = require('./config.json')
 var db = require('./db.js');
 var escape_html = require('escape-html');
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
+
+passport.use(new FacebookStrategy({
+    clientID: config.fb.app_id,
+    clientSecret: config.fb.app_secret,
+    callbackURL: config.fb.callback_url
+  },
+  function(accessToken, refreshToken, profile, done) {
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+      
+      // To keep the example simple, the user's Facebook profile is returned to
+      // represent the logged-in user.  In a typical application, you would want
+      // to associate the Facebook account with a user record in your database,
+      // and return that user instead.
+      return done(null, profile);
+    });
+  }
+));
+
 
 var app = express();
 
@@ -26,7 +47,8 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 //app.use(express.cookieParser('your secret here'));
 //app.use(express.session());
-
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/static' }));
 app.use(express.static(path.join(__dirname, 'static')));
@@ -39,11 +61,43 @@ if( app.get('env') == 'development' )
 api.addRoutes(app,'/api/1');
 pages.addRoutes(app,'');
 
-//app.get('/migrate',migrate);
+app.get('/account', ensureAuthenticated, function(req, res)
+{
+    res.send("user: " + JSON.stringify(req.user,null,'  '));
+});
 
-http.createServer(app).listen(app.get('port'), function(){
+
+//app.get('/migrate',migrate);
+app.get('/auth/facebook',passport.authenticate('facebook'),function(req, res)
+{
+    // The request will be redirected to Facebook for authentication, so this
+    // function will not be called.
+});
+
+// GET /auth/facebook/callback
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  If authentication fails, the user will be redirected back to the
+//   login page.  Otherwise, the primary route function function will be called,
+//   which, in this example, will redirect the user to the home page.
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(req, res)
+{
+    res.redirect('/');
+});
+
+http.createServer(app).listen(app.get('port'), function()
+{
     console.log('Express server listening on port ' + app.get('port'));
 });
+
+function ensureAuthenticated(req, res, next)
+{
+    if( req.isAuthenticated() )
+    {
+        return next();
+    }
+    res.redirect('/login')
+}
+
 
 function migrate(req,res)
 {

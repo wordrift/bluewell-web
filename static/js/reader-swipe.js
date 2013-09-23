@@ -74,7 +74,6 @@
             this.minLongSlideDistance = this.contentWidth * 0.3;
         },
         onContainerResize: function() {
-            //console.log("onContainerResize");
             this.container.stop(true);
             this.opts.resizeCallback();
             this.refreshHtml();
@@ -94,7 +93,6 @@
  
             ev.preventDefault();
             this.container.stop(true);
-            //console.log("onMouseWheel: ev: " + ev + ",delta: " + delta + ", dX: " + deltaX + ", dY: " + deltaY);
 
             var now = Number(new Date());
             var left = this.getLeftPosition();
@@ -176,7 +174,6 @@
         },
         */
         onMouseDown: function(ev, delta, deltaX, deltaY) {
-            console.log("onMouseDown");
             ev.preventDefault();
             this.container.stop(true);
             this.mouseDown = true;
@@ -192,7 +189,6 @@
             }
         },
         onMouseUp: function(ev, delta, deltaX, deltaY) {
-            console.log("onMouseUp");
             if( this.mouseDown )
             {
                 this.mouseDown = false;
@@ -203,7 +199,6 @@
             this.mouseDown = false;
         },
         onTouchStart: function(je) {
-            console.log("onTouchStart");
             je.preventDefault();
             this.container.stop(true);
             
@@ -215,8 +210,6 @@
         },
 
         onTouchMove: function(je) {
-            console.log("onTouchMove");
-
             var ev = je.originalEvent;
             if(ev.touches.length > 1 || ev.scale && ev.scale !== 1) 
                 return;
@@ -236,7 +229,6 @@
             }
         },
         onTouchEnd: function(je) {
-            console.log("onTouchEnd");
             je.preventDefault();
             var ev = je.originalEvent;
 
@@ -280,7 +272,6 @@
             if( deltaT < 250 && Math.abs(deltaSL) > 20 )
                 isValidSlide = true;
  
-            console.log("handleMoveDone: deltaT: " + deltaT + ",deltaSL: " + deltaSL);
             if( isValidSlide )
             {
                 this.opts.onValidSwipe(isLeft);

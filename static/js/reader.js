@@ -89,9 +89,9 @@ $(document).ready(readerReady);
 function renderStory()
 {
     var story = g_story_data;
+    $('#top_bar .title_bar .current_title').html(story.title);
 
     var html = "";
-    
     html += "<div class='story_header'>";
     html += " <h1>{0}</h1>".format(story.title);
     if( story.subtitle )
@@ -114,8 +114,8 @@ function renderStory()
     html += story.author_notes;
     html += "</div>";
     html += "<div class='spacer'></div>";
-    
     $('#story_body').html(html);
+
     readerFixMetrics();
 }
 function readerAnimateLeft(dest_x,base_duration,easing,onComplete)
@@ -241,33 +241,35 @@ function readerHideOverlays(animate)
         {
             $('#bottom_bar').fadeOut();
         }
+        if( $('#top_bar').is(':visible') )
+        {
+            $('#top_bar').fadeOut();
+        }
     }
     else
     {
         $('#text_settings').hide();
         $('#bottom_bar').hide();
+        $('#top_bar').hide();
     }
 }
 
 function clickReaderCenter()
 {
-    if( $('#bottom_bar').is(':visible') )
+    if( $('#top_bar').is(':visible') )
     {
-        $('#bottom_bar').fadeOut();
-    }
-    else if( $('#text_settings').is(':visible') )
-    {
-        $('#text_settings').fadeOut();
+        readerHideOverlays(true);
     }
     else
     {
+        $('#top_bar').fadeIn();
         $('#bottom_bar').fadeIn();
     }
 }
 
 function clickTextSettings()
 {
-    $('#bottom_bar').hide();
+    $('#bottom_bar').fadeOut();
     $('#text_settings').fadeIn();
 }
 

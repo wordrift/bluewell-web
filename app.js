@@ -13,22 +13,35 @@ var escape_html = require('escape-html');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 
-passport.use(new FacebookStrategy({
-    clientID: config.fb.app_id,
-    clientSecret: config.fb.app_secret,
-    callbackURL: config.fb.callback_url
-  },
-  function(accessToken, refreshToken, profile, done) {
+passport.serializeUser(function(user, done)
+{
+    done(null, user);
+});
+
+passport.deserializeUser(function(obj, done)
+{
+    done(null, obj);
+});
+
+
+passport.use(new FacebookStrategy(
+    {
+        clientID: config.fb.app_id,
+        clientSecret: config.fb.app_secret,
+        callbackURL: config.fb.callback_url
+    },
+    function(accessToken, refreshToken, profile, done)
+    {
     // asynchronous verification, for effect...
-    process.nextTick(function () {
-      
-      // To keep the example simple, the user's Facebook profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Facebook account with a user record in your database,
-      // and return that user instead.
-      return done(null, profile);
-    });
-  }
+        process.nextTick(function ()
+        {
+          // To keep the example simple, the user's Facebook profile is returned to
+          // represent the logged-in user.  In a typical application, you would want
+          // to associate the Facebook account with a user record in your database,
+          // and return that user instead.
+          return done(null, profile);
+        });
+    }
 ));
 
 

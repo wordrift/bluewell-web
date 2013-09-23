@@ -74,7 +74,7 @@ if( app.get('env') == 'development' )
 api.addRoutes(app,'/api/1');
 pages.addRoutes(app,'');
 
-app.get('/account', ensureAuthenticated, function(req, res)
+app.get('/account', function(req, res)
 {
     res.send("user: " + JSON.stringify(req.user,null,'  '));
 });
@@ -92,7 +92,7 @@ app.get('/auth/facebook',passport.authenticate('facebook'),function(req, res)
 //   request.  If authentication fails, the user will be redirected back to the
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(req, res)
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/' }), function(req, res)
 {
     res.redirect('/');
 });
@@ -108,7 +108,7 @@ function ensureAuthenticated(req, res, next)
     {
         return next();
     }
-    res.redirect('/login')
+    res.redirect('/')
 }
 
 

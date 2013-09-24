@@ -37,19 +37,8 @@ passport.use(new FacebookStrategy(
         console.log('refreshToken:' + refreshToken);
         console.log('profile:' + JSON.stringify(profile,null,"  "));
         
-        done(null,false);
-        
-        //user.facebookCreateOrUpdate(accessToken,profile,done);
-        
-
-        process.nextTick(function ()
-        {
-          // To keep the example simple, the user's Facebook profile is returned to
-          // represent the logged-in user.  In a typical application, you would want
-          // to associate the Facebook account with a user record in your database,
-          // and return that user instead.
-          //return done(null, profile);
-        });
+        //done({active: false});
+        user.facebookCreateOrUpdate(accessToken,profile,done);
     }
 ));
 
@@ -74,6 +63,7 @@ app.use(passport.session());
 app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/static' }));
 app.use(express.static(path.join(__dirname, 'static')));
+app.use(user.errorHandler);
 
 if( app.get('env') == 'development' )
 {
@@ -86,6 +76,14 @@ pages.addRoutes(app,'');
 app.get('/home', function(req, res)
 {
     res.send("<pre>\nuser: " + JSON.stringify(req.user,null,'  '));
+});
+app.get('/waitlist', function(req, res)
+{
+    res.send("You're on the waitlist.");
+});
+app.get('/failure', function(req, res)
+{
+    res.send("Oops!");
 });
 
 
@@ -111,10 +109,25 @@ app.get('/auth/facebook',passport.authenticate('facebook',{ scope: scope }),func
 //   request.  If authentication fails, the user will be redirected back to the
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/' }), function(req, res)
+app.get('/auth/facebook/callback',function(req, res, next)
 {
     console.log("/auth/facebook/callback");
-    res.redirect('/home');
+    passport.authenticate('facebook', function(err, user, info)
+    {
+        console.log("passport.authenticate");
+        if( err )
+        {
+            console.log("err: ");
+            console.log(err);
+            return next(err);
+        }
+        else
+        {
+            console.log("logged in: " + JSON.stringify(user,null,"  "));
+            console.log("info: " + JSON.stringify(info,null,"  "));
+            res.redirect('/home');
+        }
+    })(req, res, next);
 });
 
 http.createServer(app).listen(app.get('port'), function()

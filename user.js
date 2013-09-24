@@ -3,6 +3,27 @@
 var db = require('./db.js');
 var crypto = require('crypto');
 
+exports.errorHandler = function(err,req,res,next)
+{
+    console.log("user errorhandler, err: " + JSON.stringify(err,null,'  '));
+    
+    if( err.user_error )
+    {
+        if( err.user_error == 'not_active' )
+        {
+            res.redirect('/waitlist');
+        }
+        else
+        {
+            res.redirect('/failure');
+        }
+    }
+    else
+    {
+        next(err);
+    }
+};
+
 exports.facebookCreateOrUpdate = function(accessToken,profile,done)
 {
     var props = {
@@ -20,7 +41,7 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,done)
         {
             console.log("user replace failed:");
             console.log(err);
-            done(err);
+            done({ user_error: "db" });
         }
         else
         {
@@ -33,10 +54,11 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,done)
                 {
                     console.log("user get failed:");
                     console.log(err);
-                    done(err);
+                    done({ user_error: "db" });
                 }
                 else
                 {
+                    profile.active = result.is_active;
                     if( result.is_active )
                     {
                         crypto.randomBytes(16,function(err, buf)
@@ -44,7 +66,7 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,done)
                             if( err )
                             {
                                 console.log("no random?!");
-                                done(err);
+                                done({ user_error: "random" });
                             }
                             else
                             {
@@ -61,7 +83,7 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,done)
                                     {
                                         console.log("session key create failed:");
                                         console.log(err);
-                                        done(err);
+                                        done({ user_error: { db_error: err } });
                                     }
                                     else
                                     {
@@ -75,7 +97,7 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,done)
                     else
                     {
                         console.log("Not active");
-                        done({error: "user not active"});
+                        done({ user_error: "not_active" });
                     }
                 }
             });

@@ -24,6 +24,7 @@
 		2D3D042017E6760500458D4C /* reader.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = reader.html; sourceTree = "<group>"; };
 		2D3D042117E677EA00458D4C /* global_inc.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = global_inc.js; sourceTree = "<group>"; };
 		2D3D042217E6780700458D4C /* story.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = story.js; sourceTree = "<group>"; };
+		2D9A292A17F1013A00F0FDEC /* user.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = user.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -36,6 +37,7 @@
 				2D3D03F517E6743800458D4C /* config.json */,
 				2D3D03F717E6743800458D4C /* default_config.json */,
 				2D3D03F417E6743800458D4C /* app.js */,
+				2D9A292A17F1013A00F0FDEC /* user.js */,
 				2D3D03F617E6743800458D4C /* db.js */,
 				2D3D042117E677EA00458D4C /* global_inc.js */,
 				2D3D03FB17E6760500458D4C /* routes */,

@@ -1,6 +1,6 @@
 
 
-var config = require('./config.json')
+var config = require('./config.json');
 var mysql = require('mysql');
 
 var db_config = config.db;
@@ -27,8 +27,8 @@ exports.queryFromPool = function(sql,values,callback)
         {
             connection.query(sql,values,function(err, result)
             {
-                callback(err,result);
                 connection.release();
+                callback(err,result);
             });
         }
     });

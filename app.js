@@ -12,6 +12,7 @@ var db = require('./db.js');
 var escape_html = require('escape-html');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var user = require('./user.js');
 
 passport.serializeUser(function(user, done)
 {
@@ -32,14 +33,19 @@ passport.use(new FacebookStrategy(
     },
     function(accessToken, refreshToken, profile, done)
     {
-    // asynchronous verification, for effect...
+        console.log('accessToken:' + accessToken);
+        console.log('refreshToken:' + refreshToken);
+        console.log('profile:' + JSON.stringify(profile,null,"  "));
+        
+        user.facebookCreateOrUpdate(accessToken,profile,done);
+
         process.nextTick(function ()
         {
           // To keep the example simple, the user's Facebook profile is returned to
           // represent the logged-in user.  In a typical application, you would want
           // to associate the Facebook account with a user record in your database,
           // and return that user instead.
-          return done(null, profile);
+          //return done(null, profile);
         });
     }
 ));
@@ -74,15 +80,25 @@ if( app.get('env') == 'development' )
 api.addRoutes(app,'/api/1');
 pages.addRoutes(app,'');
 
-app.get('/account', function(req, res)
+app.get('/home', function(req, res)
 {
-    res.send("user: " + JSON.stringify(req.user,null,'  '));
+    res.send("<pre>\nuser: " + JSON.stringify(req.user,null,'  '));
 });
 
 
 //app.get('/migrate',migrate);
-app.get('/auth/facebook',passport.authenticate('facebook'),function(req, res)
+
+var scope = [
+    'email',
+    'user_birthday',
+    'user_status',
+    'user_hometown',
+    'user_location',
+    'user_likes'
+];
+app.get('/auth/facebook',passport.authenticate('facebook',{ scope: scope }),function(req, res)
 {
+    console.log("/auth/facebook");
     // The request will be redirected to Facebook for authentication, so this
     // function will not be called.
 });
@@ -94,7 +110,8 @@ app.get('/auth/facebook',passport.authenticate('facebook'),function(req, res)
 //   which, in this example, will redirect the user to the home page.
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/' }), function(req, res)
 {
-    res.redirect('/');
+    console.log("/auth/facebook/callback");
+    res.redirect('/home');
 });
 
 http.createServer(app).listen(app.get('port'), function()
@@ -104,6 +121,7 @@ http.createServer(app).listen(app.get('port'), function()
 
 function ensureAuthenticated(req, res, next)
 {
+    console.log("ensureAuthenticated");
     if( req.isAuthenticated() )
     {
         return next();

@@ -25,6 +25,9 @@
 		2D3D042117E677EA00458D4C /* global_inc.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = global_inc.js; sourceTree = "<group>"; };
 		2D3D042217E6780700458D4C /* story.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = story.js; sourceTree = "<group>"; };
 		2D9A292A17F1013A00F0FDEC /* user.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = user.js; sourceTree = "<group>"; };
+		2D9A292B17F1E1EF00F0FDEC /* waitlist.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = waitlist.html; sourceTree = "<group>"; };
+		2D9A292C17F1E1FA00F0FDEC /* fail.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = fail.html; sourceTree = "<group>"; };
+		2D9A292D17F1E3B900F0FDEC /* home.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = home.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -119,7 +122,10 @@
 			isa = PBXGroup;
 			children = (
 				2D22A63517EFF3B900E19532 /* index.html */,
+				2D9A292D17F1E3B900F0FDEC /* home.html */,
 				2D3D042017E6760500458D4C /* reader.html */,
+				2D9A292B17F1E1EF00F0FDEC /* waitlist.html */,
+				2D9A292C17F1E1FA00F0FDEC /* fail.html */,
 			);
 			path = views;
 			sourceTree = "<group>";

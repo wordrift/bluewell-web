@@ -2,7 +2,7 @@
 var db = require('../../db.js');
 
 
-exports.get_story = function(req, res)
+exports.getStory = function(req, res)
 {
     var story_id = req.params.story_id;
     res.header("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -36,7 +36,7 @@ exports.get_story = function(req, res)
             }
             else
             {
-                res.send(404,"no story found: " + JSON.stringify(results));
+                res.send(404,"no story found");
             }
         }
     });

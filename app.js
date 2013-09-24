@@ -14,17 +14,6 @@ var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var user = require('./user.js');
 
-passport.serializeUser(function(user, done)
-{
-    done(null, user);
-});
-
-passport.deserializeUser(function(obj, done)
-{
-    done(null, obj);
-});
-
-
 passport.use(new FacebookStrategy(
     {
         clientID: config.fb.app_id,
@@ -33,11 +22,6 @@ passport.use(new FacebookStrategy(
     },
     function(accessToken, refreshToken, profile, done)
     {
-        console.log('accessToken:' + accessToken);
-        console.log('refreshToken:' + refreshToken);
-        console.log('profile:' + JSON.stringify(profile,null,"  "));
-        
-        //done({active: false});
         user.facebookCreateOrUpdate(accessToken,profile,done);
     }
 ));
@@ -56,10 +40,10 @@ app.set('view engine', 'html');
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('cookiesecret'));
-app.use(express.session({ secret: 'sessionsecret' }));
+app.use(express.cookieParser());
+//app.use(express.session({ secret: 'sessionsecret' }));
 app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.session());
 app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/static' }));
 app.use(express.static(path.join(__dirname, 'static')));
@@ -73,20 +57,6 @@ if( app.get('env') == 'development' )
 api.addRoutes(app,'/api/1');
 pages.addRoutes(app,'');
 
-app.get('/home', function(req, res)
-{
-    res.send("<pre>\nuser: " + JSON.stringify(req.user,null,'  '));
-});
-app.get('/waitlist', function(req, res)
-{
-    res.send("You're on the waitlist.");
-});
-app.get('/failure', function(req, res)
-{
-    res.send("Oops!");
-});
-
-
 //app.get('/migrate',migrate);
 
 var scope = [
@@ -97,34 +67,19 @@ var scope = [
     'user_location',
     'user_likes'
 ];
-app.get('/auth/facebook',passport.authenticate('facebook',{ scope: scope }),function(req, res)
-{
-    console.log("/auth/facebook");
-    // The request will be redirected to Facebook for authentication, so this
-    // function will not be called.
-});
+app.get('/auth/facebook',passport.authenticate('facebook',{ session: false, scope: scope }));
 
-// GET /auth/facebook/callback
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
 app.get('/auth/facebook/callback',function(req, res, next)
 {
-    console.log("/auth/facebook/callback");
-    passport.authenticate('facebook', function(err, user, info)
+    passport.authenticate('facebook',{ session: false }, function(err, user, info)
     {
-        console.log("passport.authenticate");
         if( err )
         {
-            console.log("err: ");
-            console.log(err);
-            return next(err);
+            res.redirect('/fail');
         }
         else
         {
-            console.log("logged in: " + JSON.stringify(user,null,"  "));
-            console.log("info: " + JSON.stringify(info,null,"  "));
+            res.cookie('session_key',user.session_key,{ maxAge: 10*365*24*60*60*1000, httpOnly: true });
             res.redirect('/home');
         }
     })(req, res, next);

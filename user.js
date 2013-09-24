@@ -1,6 +1,7 @@
 
 
 var db = require('./db.js');
+var crypto = require('crypto');
 
 exports.facebookCreateOrUpdate = function(accessToken,profile,done)
 {
@@ -38,29 +39,42 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,done)
                 {
                     if( result.is_active )
                     {
-                        
-                        var props = {
-                            user_id: user_id,
-                            session_key: session_key
-                        };
-                        var sql = "INSERT INTO user_session SET ?";
-                        db.queryFromPool(sql,props,function(err,result)
+                        crypto.randomBytes(16,function(err, buf)
                         {
                             if( err )
                             {
-                                console.log("session key create failed:");
-                                console.log(err);
+                                console.log("no random?!");
                                 done(err);
                             }
                             else
                             {
-                                profile.session_key = session_key;
-                                done(null,profile);
+                                var session_key = buf.toString('hex');
+                                console.log("session key: " + session_key);
+                                var props = {
+                                    user_id: user_id,
+                                    session_key: session_key
+                                };
+                                var sql = "INSERT INTO user_session SET ?";
+                                db.queryFromPool(sql,props,function(err,result)
+                                {
+                                    if( err )
+                                    {
+                                        console.log("session key create failed:");
+                                        console.log(err);
+                                        done(err);
+                                    }
+                                    else
+                                    {
+                                        profile.session_key = session_key;
+                                        done(null,profile);
+                                    }
+                                });
                             }
-                        }
+                        });
                     }
                     else
                     {
+                        console.log("Not active");
                         done({error: "user not active"});
                     }
                 }

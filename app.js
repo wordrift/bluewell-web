@@ -37,7 +37,10 @@ passport.use(new FacebookStrategy(
         console.log('refreshToken:' + refreshToken);
         console.log('profile:' + JSON.stringify(profile,null,"  "));
         
-        user.facebookCreateOrUpdate(accessToken,profile,done);
+        done(null,false);
+        
+        //user.facebookCreateOrUpdate(accessToken,profile,done);
+        
 
         process.nextTick(function ()
         {

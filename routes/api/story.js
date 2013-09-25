@@ -1,7 +1,6 @@
 
 var db = require('../../db.js');
 
-
 exports.getStory = function(req, res)
 {
     var story_id = req.params.story_id;
@@ -16,7 +15,7 @@ exports.getStory = function(req, res)
         sql: sql,
         nestTables: true,
     };
-    db.queryFromPoolWithConnection(options,story_id,function(err,results,connection)
+    db.queryFromPool(options,story_id,function(err,results)
     {
         if( err )
         {

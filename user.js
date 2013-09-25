@@ -24,7 +24,7 @@ exports.errorHandler = function(err,req,res,next)
     }
 };
 
-exports.facebookCreateOrUpdate = function(accessToken,profile,done)
+exports.facebookCreateOrUpdate = function(accessToken,profile,callback)
 {
     var props = {
         email: profile.emails[0].value,
@@ -41,7 +41,7 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,done)
         {
             console.log("user find failed:");
             console.log(err);
-            done({ user_error: "db" });
+            callback({ user_error: "db" });
         }
         else
         {
@@ -57,18 +57,18 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,done)
                     {
                         console.log("user update failed:");
                         console.log(err);
-                        done({ user_error: "db" });
+                        callback({ user_error: "db" });
                     }
                     else
                     {
                         if( is_active )
                         {
-                            createUserSession(user_id,done);
+                            createUserSession(user_id,callback);
                         }
                         else
                         {
                             console.log("Not active user, updated user information, denying login");
-                            done({ user_error: "not_active" });
+                            callback({ user_error: "not_active" });
                         }
                     }
                 });
@@ -82,12 +82,12 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,done)
                     {
                         console.log("user insert failed:");
                         console.log(err);
-                        done({ user_error: "db" });
+                        callback({ user_error: "db" });
                     }
                     else
                     {
                         console.log("Created new user, assuming default in-active");
-                        done({ user_error: "not_active" });
+                        callback({ user_error: "not_active" });
                     }
                 });
             }
@@ -95,14 +95,14 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,done)
     });
 };
 
-function createUserSession(user_id,done)
+function createUserSession(user_id,callback)
 {
     crypto.randomBytes(16,function(err, buf)
     {
         if( err )
         {
             console.log("no random?!");
-            done({ user_error: "random" });
+            callback({ user_error: "random" });
         }
         else
         {
@@ -119,11 +119,11 @@ function createUserSession(user_id,done)
                 {
                     console.log("session key create failed:");
                     console.log(err);
-                    done({ user_error: "db" });
+                    callback({ user_error: "db" });
                 }
                 else
                 {
-                    done(null,props);
+                    callback(null,props);
                 }
             });
         }
@@ -171,7 +171,7 @@ function validCheck(req,res,next,error,failure)
     });
 }
 
-exports.isValidSession = function(req,done)
+exports.isValidSession = function(req,callback)
 {
     var session_key = false;
     if( req.cookies.session_key )
@@ -187,7 +187,7 @@ exports.isValidSession = function(req,done)
         if( session_key in g_session_map )
         {
             req.user = g_session_map[session_key];
-            done(false,true);
+            callback(false,true);
         }
         else
         {
@@ -202,7 +202,7 @@ exports.isValidSession = function(req,done)
             {
                 if( err )
                 {
-                    done(err);
+                    callback(err);
                 }
                 else
                 {
@@ -212,12 +212,12 @@ exports.isValidSession = function(req,done)
                         console.log("found user: " + user.user_id);
                         g_session_map[session_key] = user;
                         req.user = user;
-                        done(false,true);
+                        callback(false,true);
                     }
                     else
                     {
                         console.log("no found user");
-                        done(false,false);
+                        callback(false,false);
                     }
                 }
             });
@@ -225,6 +225,6 @@ exports.isValidSession = function(req,done)
     }
     else
     {
-        done(false,false);
+        callback(false,false);
     }
 }

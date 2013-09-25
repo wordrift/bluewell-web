@@ -3,6 +3,7 @@ var MIN_FONT_SIZE = 6;
 var MAX_FONT_SIZE = 26;
 var MIN_MARGIN = 10;
 var PAGE_DELAY = 200;
+var FADE_DELAY = 200;
 
 var IS_IPAD = window.navigator.userAgent.match(/iPad/i) != null;
 var IS_IPHONE = window.navigator.userAgent.match(/iPhone/i) != null;
@@ -235,15 +236,15 @@ function readerHideOverlays(animate)
     {
         if( $('#text_settings').is(':visible') )
         {
-            $('#text_settings').fadeOut();
+            $('#text_settings').fadeOut(FADE_DELAY);
         }
         if( $('#bottom_bar').is(':visible') )
         {
-            $('#bottom_bar').fadeOut();
+            $('#bottom_bar').fadeOut(FADE_DELAY);
         }
         if( $('#top_bar').is(':visible') )
         {
-            $('#top_bar').fadeOut();
+            $('#top_bar').fadeOut(FADE_DELAY);
         }
     }
     else
@@ -262,15 +263,15 @@ function clickReaderCenter()
     }
     else
     {
-        $('#top_bar').fadeIn();
-        $('#bottom_bar').fadeIn();
+        $('#top_bar').fadeIn(FADE_DELAY);
+        $('#bottom_bar').fadeIn(FADE_DELAY);
     }
 }
 
 function clickTextSettings()
 {
-    $('#bottom_bar').fadeOut();
-    $('#text_settings').fadeIn();
+    $('#bottom_bar').fadeOut(FADE_DELAY);
+    $('#text_settings').fadeIn(FADE_DELAY);
 }
 
 function clickFontSmaller()

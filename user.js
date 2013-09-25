@@ -193,7 +193,7 @@ exports.isValidSession = function(req,done)
         {
             var sql = "SELECT user.user_id,user.email,user.display_name FROM user_session ";
             sql += " NATUAL JOIN user "
-            sql += " WHERE session_key = ? ";
+            sql += " WHERE session_key = ? AND user.is_active = 1";
             var options = {
                 sql: sql,
                 nestTables: true,

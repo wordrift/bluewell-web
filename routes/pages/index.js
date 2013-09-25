@@ -6,7 +6,7 @@ exports.addRoutes = function(app,prefix)
 {
     app.get(prefix + '/', index);
     app.get(prefix + '/home', user.checkSessionForPage, home);
-    app.get(prefix + '/reader', reader);
+    app.get(prefix + '/reader', user.checkSessionForPage, reader);
     app.get(prefix + '/waitlist', waitlist);
     app.get(prefix + '/fail', fail);
 };

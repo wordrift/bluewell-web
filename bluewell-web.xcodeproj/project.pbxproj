@@ -9,6 +9,9 @@
 /* Begin PBXFileReference section */
 		2D22A63417EF58B000E19532 /* reader-swipe.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "reader-swipe.js"; sourceTree = "<group>"; };
 		2D22A63517EFF3B900E19532 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		2D22A63617F2784F00E19532 /* home.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = home.js; sourceTree = "<group>"; };
+		2D22A63717F2786100E19532 /* home.less */ = {isa = PBXFileReference; lastKnownFileType = text; path = home.less; sourceTree = "<group>"; };
+		2D22A63817F28DBE00E19532 /* stream.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = stream.js; sourceTree = "<group>"; };
 		2D3D03F417E6743800458D4C /* app.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = app.js; sourceTree = "<group>"; };
 		2D3D03F517E6743800458D4C /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		2D3D03F617E6743800458D4C /* db.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = db.js; sourceTree = "<group>"; };
@@ -63,6 +66,7 @@
 			children = (
 				2D3D040017E6760500458D4C /* index.js */,
 				2D3D042217E6780700458D4C /* story.js */,
+				2D22A63817F28DBE00E19532 /* stream.js */,
 			);
 			path = api;
 			sourceTree = "<group>";
@@ -90,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				2D3D040A17E6760500458D4C /* reader.less */,
+				2D22A63717F2786100E19532 /* home.less */,
 			);
 			path = css;
 			sourceTree = "<group>";
@@ -104,6 +109,7 @@
 		2D3D040C17E6760500458D4C /* js */ = {
 			isa = PBXGroup;
 			children = (
+				2D22A63617F2784F00E19532 /* home.js */,
 				2D22A63417EF58B000E19532 /* reader-swipe.js */,
 				2D3D041217E6760500458D4C /* reader.js */,
 				2D3D041317E6760500458D4C /* string.utils.js */,

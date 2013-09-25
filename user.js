@@ -192,7 +192,7 @@ exports.isValidSession = function(req,done)
         else
         {
             var sql = "SELECT user.user_id,user.email,user.display_name FROM user_session ";
-            sql += " NATUAL JOIN user "
+            sql += " JOIN user ON user.user_id = user_session.user_id "
             sql += " WHERE session_key = ? AND user.is_active = 1";
             var options = {
                 sql: sql,
@@ -208,9 +208,10 @@ exports.isValidSession = function(req,done)
                 {
                     if( results.length > 0 )
                     {
-                        console.log("found user");
-                        g_session_map[session_key] = results[0].user;
-                        req.user = results[0].user;
+                        var user = results[0].user;
+                        console.log("found user: " + user.user_id);
+                        g_session_map[session_key] = user;
+                        req.user = user;
                         done(false,true);
                     }
                     else

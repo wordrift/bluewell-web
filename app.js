@@ -57,7 +57,7 @@ if( app.get('env') == 'development' )
 api.addRoutes(app,'/api/1');
 pages.addRoutes(app,'');
 
-//app.get('/migrate',migrate);
+app.get('/debug',debug_handler);
 
 var scope = [
     'email',
@@ -217,6 +217,41 @@ function migrateStory(res,old_story,next)
         }
     });
 }
+
+
+
+
+function debug_handler(req,res)
+{
+    var sql = "INSERT INTO stream_node (story_id, user_id, story_order) VALUES ?";
+    
+    var values = [
+        [ 1946, 8, 1000 ],
+        [ 2063, 8, 2000 ],
+        [ 1900, 8, 3000 ],
+        [ 1696, 8, 4000 ],
+        [ 1596, 8, 5000 ],
+        [ 1575, 8, 6000 ],
+        [ 1809, 8, 7000 ],
+        [ 2055, 8, 8000 ],
+        [ 1813, 8, 9000 ],
+        [ 1870, 8, 10000 ]
+    ];
+    db.queryFromPool(sql,[values],function(err,results)
+    {
+        if( err )
+        {
+            console.log(err);
+            res.send(err);
+        }
+        else
+        {
+            console.log(results);
+            res.send(results);
+        }
+    });
+}
+
 
 
 

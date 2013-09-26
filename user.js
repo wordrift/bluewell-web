@@ -39,7 +39,6 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,callback)
     {
         if( err )
         {
-            console.log("user find failed:");
             console.log(err);
             callback({ user_error: "db" });
         }
@@ -86,7 +85,6 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,callback)
                     }
                     else
                     {
-                        console.log("Created new user, assuming default in-active");
                         callback({ user_error: "not_active" });
                     }
                 });
@@ -107,7 +105,6 @@ function createUserSession(user_id,callback)
         else
         {
             var session_key = buf.toString('hex');
-            console.log("session key: " + session_key);
             var props = {
                 user_id: user_id,
                 session_key: session_key
@@ -191,7 +188,8 @@ exports.isValidSession = function(req,callback)
         }
         else
         {
-            var sql = "SELECT user.user_id,user.email,user.display_name FROM user_session ";
+            var sql = "SELECT user.user_id,user.email,user.display_name,user.current_stream_node_id ";
+            sql += " FROM user_session ";
             sql += " JOIN user ON user.user_id = user_session.user_id "
             sql += " WHERE session_key = ? AND user.is_active = 1";
             var options = {
@@ -209,7 +207,6 @@ exports.isValidSession = function(req,callback)
                     if( results.length > 0 )
                     {
                         var user = results[0].user;
-                        console.log("found user: " + user.user_id);
                         g_session_map[session_key] = user;
                         req.user = user;
                         callback(false,true);

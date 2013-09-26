@@ -61,22 +61,6 @@ var g_story_data = {};
 
 function readerReady()
 {
-    jQuery.ajax(
-    {
-        type: 'GET',
-        url: '/api/1/story/' + g_story_id,
-        dataType: 'json',
-        success: function(data)
-        {
-            g_story_data = data;
-            renderStory();
-        },
-        error: function()
-        {
-            window.alert("Failed to get story data.");
-        }
-    });
-    
     var opts = {
         onValidSwipe: readerValidSwipe,
         onClick: readerClick

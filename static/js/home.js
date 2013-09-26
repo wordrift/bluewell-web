@@ -16,7 +16,6 @@ function showReader()
     
     getCurrentStory(function(err,story)
     {
-        g_story_data = story;
-        renderStory();
+        renderStory(story);
     });
 }

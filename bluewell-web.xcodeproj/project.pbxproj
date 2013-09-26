@@ -23,7 +23,6 @@
 		2D3D040217E6760500458D4C /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
 		2D3D040A17E6760500458D4C /* reader.less */ = {isa = PBXFileReference; lastKnownFileType = text; path = reader.less; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.css; };
 		2D3D041217E6760500458D4C /* reader.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = reader.js; sourceTree = "<group>"; };
-		2D3D041317E6760500458D4C /* string.utils.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = string.utils.js; sourceTree = "<group>"; };
 		2D3D042017E6760500458D4C /* reader.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = reader.html; sourceTree = "<group>"; };
 		2D3D042117E677EA00458D4C /* global_inc.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = global_inc.js; sourceTree = "<group>"; };
 		2D3D042217E6780700458D4C /* story.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = story.js; sourceTree = "<group>"; };
@@ -114,7 +113,6 @@
 				2D22A63617F2784F00E19532 /* home.js */,
 				2D22A63417EF58B000E19532 /* reader-swipe.js */,
 				2D3D041217E6760500458D4C /* reader.js */,
-				2D3D041317E6760500458D4C /* string.utils.js */,
 				2D9A292E17F3587E00F0FDEC /* stream.js */,
 			);
 			path = js;

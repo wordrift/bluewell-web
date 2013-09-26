@@ -1,6 +1,7 @@
 
 var g_stream_node_list = [];
 var g_story_map = {};
+var g_current_stream_index = 0;
 
 (function()
 {
@@ -43,6 +44,20 @@ function streamUpdate()
         success: function(data)
         {
             g_stream_node_list = data;
+            
+            if( g_user.current_stream_node_id )
+            {
+                var i = findStreamNodeIndexById(g_user.current_stream_node_id);
+                if( i )
+                {
+                    g_current_stream_index = i;
+                }
+                else
+                {
+                    g_current_stream_index = 0;
+                }
+            }
+                
             streamSaveNodes();
             prefetchStories();
         },
@@ -58,14 +73,11 @@ function prefetchStories()
     var fetch_list = [];
     var end = g_stream_node_list.length;
 
-    if( g_user.current_stream_node_id )
+    if( g_current_stream_index )
     {
-        var i = findStreamNodeIndexById(g_user.current_stream_node_id);
-        var node = g_stream_node_list[i];
-        fetch_list.push(node.story_id);
-        end = i;
+        end = g_current_stream_index;
         
-        for( ; i < g_stream_node_list.length ; ++i )
+        for( var i = g_current_stream_index ; i < g_stream_node_list.length ; ++i )
         {
             var node = g_stream_node_list[i];
             fetch_list.push(node.story_id);
@@ -156,12 +168,7 @@ function fetchStoryById(story_id,callback)
 
 function getCurrentStory(callback)
 {
-    if( !g_user.current_stream_node_id )
-    {
-        g_user.current_stream_node_id = g_stream_node_list[0].stream_node_id;
-    }
-    var node_id = g_user.current_stream_node_id;
-    var node = findStreamNodeById(node_id);
+    var node = g_stream_node_list[g_current_stream_index];
     var story_id = node.story_id;
     fetchStoryById(story_id,function(err,story)
     {
@@ -175,3 +182,66 @@ function getCurrentStory(callback)
         }
     });
 }
+
+function hasPreviousStory()
+{
+    return g_current_stream_index > 0;
+}
+function hasNextStory()
+{
+    if( ( g_current_stream_index + 1 ) >= g_stream_node_list.length )
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+function isAtStreamHead()
+{
+    var next_index = g_current_stream_index + 1;
+    if( next_index >= g_stream_node_list.length )
+    {
+        return true;
+    }
+    else
+    {
+        var next_node = g_stream_node_list[next_index];
+        if( next_node.max_word > 0 )
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+}
+function streamPrevious()
+{
+    if( g_current_stream_index > 0 )
+    {
+        g_current_stream_index--;
+    }
+}
+function streamNext()
+{
+    if( ( g_current_stream_index + 1 ) < g_stream_node_list.length )
+    {
+        g_current_stream_index++;
+    }
+}
+function streamFastForward()
+{
+    for( var i = g_current_stream_index + 1 ; i < g_stream_node_list.length ; ++i )
+    {
+        var node = g_stream_node_list[i];
+        if( node.max_word > 0 )
+        {
+            g_stream_node_index = i;
+        }
+    }
+}
+
+

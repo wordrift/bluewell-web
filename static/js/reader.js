@@ -71,9 +71,9 @@ function readerReady()
 }
 $(document).ready(readerReady);
 
-function renderStory()
+function renderStory(story)
 {
-    var story = g_story_data;
+    g_story_data = story;
     $('#top_bar .title_bar .current_title').html(story.title);
 
     var html = "";
@@ -100,8 +100,22 @@ function renderStory()
     html += "</div>";
     html += "<div class='spacer'></div>";
     $('#story_body').html(html);
-
     readerFixMetrics();
+
+    $('#reader #top_bar .nav_bar div').removeClass('active');
+    if( hasPreviousStory() )
+    {
+        $('#reader #top_bar .nav_bar .prev').addClass('active');
+    }
+    if( hasNextStory() )
+    {
+        $('#reader #top_bar .nav_bar .next').addClass('active');
+    }
+    if( !isAtStreamHead() )
+    {
+        $('#reader #top_bar .nav_bar .fast_forward').addClass('active');
+    }
+
 }
 function readerAnimateLeft(dest_x,base_duration,easing,onComplete)
 {
@@ -334,4 +348,39 @@ function clickTheme(new_theme)
     $(sel).addClass('active');
     readerFixMetrics();
 }
+
+function readerPrev()
+{
+    if( hasPreviousStory() )
+    {
+        streamPrevious();
+        getCurrentStory(function(err,story)
+        {
+            renderStory(story);
+        });
+    }
+}
+function readerNext()
+{
+    if( hasNextStory() )
+    {
+        streamNext();
+        getCurrentStory(function(err,story)
+        {
+            renderStory(story);
+        });
+    }
+}
+function readerFastForward()
+{
+    if( !isAtStreamHead() )
+    {
+        streamFastForward();
+        getCurrentStory(function(err,story)
+        {
+            renderStory(story);
+        });
+    }
+}
+
 

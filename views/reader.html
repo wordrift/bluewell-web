@@ -31,8 +31,7 @@
                 dataType: 'json',
                 success: function(data)
                 {
-                    g_story_data = data;
-                    renderStory();
+                    renderStory(data);
                 },
                 error: function()
                 {

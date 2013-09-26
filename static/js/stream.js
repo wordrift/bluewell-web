@@ -111,34 +111,47 @@ function fetchStoryById(story_id,callback)
     {
         callback = function(){};
     }
+    
+    if( story_id in g_story_map )
+    {
+        callback(false,g_story_map[story_id]);
+        return;
+    }
 
     var key = "story_{0}".format(story_id);
-    if( key in g_story_map )
+    if( key in window.localStorage )
     {
-        var story = g_story_map[key];
-        callback(null,story);
-    }
-    else
-    {
-        jQuery.ajax(
+        try
         {
-            type: 'GET',
-            url: '/api/1/story/' + story_id,
-            dataType: 'json',
-            success: function(data)
-            {
-                window.localStorage[key] = JSON.stringify(data);
-                g_story_map[story_id] = data;
-                
-                callback(null,data);
-            },
-            error: function()
-            {
-                window.alert("Failed to get story data.");
-                callback(true);
-            }
-        });
+            var json = window.localStorage[key];
+            var story = JSON.parse(json);
+            g_story_map[story_id] = story;
+            callback(null,story);
+            return;
+        }
+        catch(e)
+        {
+        }
     }
+    
+    jQuery.ajax(
+    {
+        type: 'GET',
+        url: '/api/1/story/' + story_id,
+        dataType: 'json',
+        success: function(data)
+        {
+            window.localStorage[key] = JSON.stringify(data);
+            g_story_map[story_id] = data;
+            
+            callback(null,data);
+        },
+        error: function()
+        {
+            window.alert("Failed to get story data.");
+            callback(true);
+        }
+    });
 }
 
 function getCurrentStory(callback)

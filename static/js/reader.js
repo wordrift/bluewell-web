@@ -71,7 +71,7 @@ function readerReady()
 }
 $(document).ready(readerReady);
 
-function renderStory(story)
+function renderStory(story,node)
 {
     g_story_data = story;
     $('#top_bar .title_bar .current_title').html(story.title);
@@ -354,9 +354,9 @@ function readerPrev()
     if( hasPreviousStory() )
     {
         streamPrevious();
-        getCurrentStory(function(err,story)
+        getCurrentStory(function(err,story,node)
         {
-            renderStory(story);
+            renderStory(story,node);
         });
     }
 }
@@ -365,9 +365,9 @@ function readerNext()
     if( hasNextStory() )
     {
         streamNext();
-        getCurrentStory(function(err,story)
+        getCurrentStory(function(err,story,node)
         {
-            renderStory(story);
+            renderStory(story,node);
         });
     }
 }
@@ -376,9 +376,9 @@ function readerFastForward()
     if( !isAtStreamHead() )
     {
         streamFastForward();
-        getCurrentStory(function(err,story)
+        getCurrentStory(function(err,story,node)
         {
-            renderStory(story);
+            renderStory(story,node);
         });
     }
 }

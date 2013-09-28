@@ -14,8 +14,8 @@ function showReader()
     $('#home').hide();
     $('#reader').show();
     
-    getCurrentStory(function(err,story)
+    getCurrentStory(function(err,story,node)
     {
-        renderStory(story);
+        renderStory(story,node);
     });
 }

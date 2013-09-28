@@ -43,6 +43,11 @@ function streamUpdate()
         dataType: 'json',
         success: function(data)
         {
+            for( var i = 0 ; i < data.length ; ++i )
+            {
+                data.modified = false;
+            }
+        
             g_stream_node_list = data;
             
             if( g_user.current_stream_node_id )
@@ -178,7 +183,7 @@ function getCurrentStory(callback)
         }
         else
         {
-            callback(null,story);
+            callback(null,story,node);
         }
     });
 }

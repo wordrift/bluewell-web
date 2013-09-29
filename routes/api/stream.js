@@ -78,7 +78,7 @@ function getStream(user,callback)
 function extendStream(user,callback)
 {
     var user_id = user.user_id;
-    var limit = 10;
+    var limit = 20;
 
     var args = [];
     var sql = "SELECT story.story_id FROM story";

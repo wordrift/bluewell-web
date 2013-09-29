@@ -133,10 +133,7 @@ function renderStory(story,node)
         word_count += words;
     });
     
-    if( node.current_word )
-    {
-        readerSeekToWord(node.current_word);
-    }
+    readerSeekToWord(node.current_word);
     
     readerSaveProgress();
 }

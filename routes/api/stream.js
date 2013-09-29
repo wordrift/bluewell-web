@@ -1,5 +1,6 @@
 
 var db = require('../../db.js');
+var async = require('async');
 
 exports.getStream = function(req,res)
 {
@@ -16,9 +17,24 @@ exports.getStream = function(req,res)
         }
         else
         {
-            if( results.length > 0 )
+            var node_list = results;
+            var unread_count = 0;
+
+            if( node_list.length > 0 )
             {
-                res.send(results);
+              
+                for( var i = 0 ; i < node_list.length ; ++i )
+                {
+                    var node = node_list[i];
+                    if( node.max_word == 0 )
+                    {
+                        unread_count++;
+                    }
+                }
+            }
+            if( unread_count >= 10 )
+            {
+                res.send(node_list);
             }
             else
             {
@@ -129,3 +145,74 @@ function extendStream(user,callback)
         }
     });
 }
+
+exports.postStream = function(req,res)
+{
+    var user = req.user;
+    var user_id = user.user_id;
+    var update_list = req.body;
+
+    res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.header("Pragma", "no-cache");
+    var last_stream_node_id = false;
+    
+    async.eachSeries(update_list,function(node,next)
+    {
+        var current_word = node.current_word;
+        var max_word = node.max_word;
+        var stream_node_id = node.stream_node_id;
+        var modified_ts = node.modified_ts;
+        last_stream_node_id = stream_node_id;
+    
+        var sql = "";
+        var values = [];
+        sql += "UPDATE stream_node SET current_word = ? ";
+        sql += " WHERE stream_node_id = ? AND user_id = ? ";
+        sql += " AND updated_ts < ?;";
+        values.push(current_word,stream_node_id,user_id,modified_ts);
+
+        sql += "UPDATE stream_node SET max_word = GREATEST(max_word,?) ";
+        sql += " WHERE stream_node_id = ? AND user_id = ?;";
+        values.push(max_word,stream_node_id,user_id);
+
+        //console.log(sql);
+        
+        db.queryFromPool(sql,values,function(err,results)
+        {
+            if( err )
+            {
+                console.log(err)
+                next(err);
+            }
+            else
+            {
+                next(false);
+            }
+        });
+    }
+    ,function(err)
+    {
+        if( err )
+        {
+            res.send(500,err);
+        }
+        else
+        {
+            user.current_stream_node_id = last_stream_node_id;
+            var sql = "UPDATE user SET current_stream_node_id = ? WHERE user_id = ?";
+            db.queryFromPool(sql,[last_stream_node_id,user_id],function(err,results)
+            {
+                if( err )
+                {
+                    console.log(err)
+                    res.send(500,err);
+                }
+                else
+                {
+                    res.send(200);
+                }
+            });
+        }
+    });
+    
+};

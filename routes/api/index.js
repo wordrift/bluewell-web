@@ -8,6 +8,7 @@ exports.addRoutes = function(app,prefix)
     app.get(prefix + '/story/:story_id',user.checkSessionForApi,api_story.getStory);
 
     app.get(prefix + '/stream',user.checkSessionForApi,api_stream.getStream);
+    app.post(prefix + '/stream',user.checkSessionForApi,api_stream.postStream);
 
 };
 

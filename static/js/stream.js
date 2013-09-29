@@ -45,7 +45,7 @@ function streamUpdate()
         {
             for( var i = 0 ; i < data.length ; ++i )
             {
-                data.modified = false;
+                data.modified_ts = false;
             }
         
             g_stream_node_list = data;
@@ -71,6 +71,65 @@ function streamUpdate()
             window.alert("Failed to get stream data.");
         }
     });
+}
+var g_is_syncing = false;
+function streamSyncNodes()
+{
+    if( g_is_syncing )
+    {
+        console.log("syncing in progress, skipping");
+        return;
+    }
+    g_is_syncing = true;
+
+    var modified_list = [];
+    for( var i = 0 ; i < g_stream_node_list.length ; ++i )
+    {
+        var node = g_stream_node_list[i];
+        if( node.modified_ts )
+        {
+            var copy = jQuery.extend(true, {}, node);
+            modified_list.push(copy);
+        }
+    }
+    
+    if( modified_list.length > 0 )
+    {
+        var post_data = JSON.stringify(modified_list);
+        jQuery.ajax({
+            type: 'POST',
+            url: '/api/1/stream',
+            contentType: 'application/json',
+            data: post_data,
+            processData: false,
+            success: function(data)
+            {
+                for( var i = 0 ; i < modified_list.length ; ++i )
+                {
+                    var synced_node = modified_list[i];
+                    var node = findStreamNodeById(synced_node.stream_node_id);
+                    
+                    if( synced_node.modified_ts == node.modified_ts )
+                    {
+                        node.modified_ts = false;
+                    }
+                }
+                    
+                g_is_syncing = false;
+                // call ourselves to sync anything modified while we were running
+                streamSyncNodes();
+            },
+            error: function()
+            {
+                window.alert("Failed to sync stream data.");
+                g_is_syncing = false;
+            }
+        });
+    }
+    else
+    {
+        g_is_syncing = false;
+    }
 }
 
 function prefetchStories()
@@ -244,9 +303,45 @@ function streamFastForward()
         var node = g_stream_node_list[i];
         if( node.max_word > 0 )
         {
-            g_stream_node_index = i;
+            g_current_stream_index = i;
         }
     }
 }
 
+function streamSaveProgress(current_word,max_word)
+{
+    streamModifyCurrentNode({max_word: max_word,current_word: current_word});
+}
 
+function streamModifyCurrentNode(props)
+{
+    var modified = false;
+    var node = g_stream_node_list[g_current_stream_index];
+    
+    if( 'max_word' in props )
+    {
+        var max_word = props.max_word;
+        if( max_word > node.max_word )
+        {
+            node.max_word = max_word;
+            modified = true;
+        }
+    }
+    
+    if( 'current_word' in props )
+    {
+        var current_word = props.current_word;
+        if( current_word != node.current_word )
+        {
+            node.current_word = current_word;
+            modified = true;
+        }
+    }
+    
+    if( modified )
+    {
+        node.modified_ts = new Date();
+        streamSaveNodes();
+        streamSyncNodes();
+    }
+}

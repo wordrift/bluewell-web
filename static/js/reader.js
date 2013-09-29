@@ -115,8 +115,69 @@ function renderStory(story,node)
     {
         $('#reader #top_bar .nav_bar .fast_forward').addClass('active');
     }
-
+    
+    var word_count = 0;
+    $('#story_body .text').children().each(function(index,element)
+    {
+        var words = 0;
+        var text = $(this).text();
+        var m = text.match(/\w[^\s]*/g);
+        if( m )
+        {
+            words = m.length;
+        }
+        
+        $(this).data('start_word',word_count);
+        $(this).data('word_count',words);
+        
+        word_count += words;
+    });
+    
+    if( node.current_word )
+    {
+        readerSeekToWord(node.current_word);
+    }
+    
+    readerSaveProgress();
 }
+function readerSeekToWord(word_num)
+{
+    var y_pos = 0;
+    var scroll_top = $('#story_body').scrollTop();
+    $('#story_body .text').children().each(function(index,element)
+    {
+        var start_word = $(this).data('start_word');
+        if( start_word <= word_num )
+        {
+            y_pos = scroll_top + $(this).position().top;
+        }
+        else
+        {
+            return false;
+        }
+    });
+    var body_height = parseInt( $('#story_body').css('height') );
+    var scroll_height = $('#story_body').get(0).scrollHeight;
+
+    var page = Math.round(y_pos / body_height);
+    var new_top = page * body_height;
+    
+    if( new_top + body_height < scroll_height )
+    {
+        $('#story_body').scrollTop(new_top);
+    }
+}
+function readerSaveProgress()
+{
+    var in_view = $('#story_body .text').children(':in-viewport');
+    
+    var current_word = in_view.first().data('start_word');
+    var last = in_view.last();
+    var max_word = last.data('start_word') + last.data('word_count');
+    
+    streamSaveProgress(current_word,max_word);
+}
+
 function readerAnimateLeft(dest_x,base_duration,easing,onComplete)
 {
     if( !base_duration )
@@ -196,6 +257,7 @@ function readerPageRight()
             $('#story_body').scrollTop(new_top);
             $('#story_body').css('left',half_width + 'px');
             readerAnimateLeft(0,PAGE_DELAY/2,'easeOutCirc');
+            readerSaveProgress();
         });
     }
     else
@@ -219,6 +281,7 @@ function readerPageLeft()
             $('#story_body').scrollTop(new_top);
             $('#story_body').css('left',-half_width + 'px');
             readerAnimateLeft(0,PAGE_DELAY/2,'easeOutCirc');
+            readerSaveProgress();
         });
     }
     else

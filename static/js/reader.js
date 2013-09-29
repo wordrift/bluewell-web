@@ -139,25 +139,34 @@ function renderStory(story,node)
 }
 function readerSeekToWord(word_num)
 {
-    var y_pos = 0;
-    var scroll_top = $('#story_body').scrollTop();
-    $('#story_body .text').children().each(function(index,element)
-    {
-        var start_word = $(this).data('start_word');
-        if( start_word <= word_num )
-        {
-            y_pos = scroll_top + $(this).position().top;
-        }
-        else
-        {
-            return false;
-        }
-    });
+    var new_top = 0;
     var body_height = parseInt( $('#story_body').css('height') );
     var scroll_height = $('#story_body').get(0).scrollHeight;
 
-    var page = Math.round(y_pos / body_height);
-    var new_top = page * body_height;
+    if( word_num > 0 )
+    {
+        var y_pos = 0;
+        var scroll_top = $('#story_body').scrollTop();
+        $('#story_body .text').children().each(function(index,element)
+        {
+            var start_word = $(this).data('start_word');
+            if( start_word <= word_num )
+            {
+                y_pos = scroll_top + $(this).position().top;
+            }
+            else
+            {
+                return false;
+            }
+        });
+        var page = Math.round(y_pos / body_height);
+        
+        new_top = page * body_height;
+    }
+    else
+    {
+        new_top = 0;
+    }
     
     if( new_top + body_height < scroll_height )
     {

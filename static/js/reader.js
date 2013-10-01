@@ -380,6 +380,15 @@ function readerFixMetrics()
     var line_height = Math.ceil( font_size * metrics.line_height_ratio );
     $('#story_body').css('line-height',line_height + 'px');
     
+    var h1_font_size = 1.5 * font_size;
+    var h2_font_size = 1.25 * font_size;
+    var header_line_height = line_height * 2;
+    $('#reader #story_body .text h1').css('font-size',h1_font_size + 'px');
+    $('#reader #story_body .text h1').css('line-height',header_line_height + 'px');
+
+    $('#reader #story_body .text h2').css('font-size',h2_font_size + 'px');
+    $('#reader #story_body .text h2').css('line-height',header_line_height + 'px');    
+    
     var lines = Math.floor( available_height / line_height );
     
     var used_height = lines * line_height;

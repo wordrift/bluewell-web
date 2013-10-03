@@ -71,6 +71,49 @@ function readerReady()
 }
 $(document).ready(readerReady);
 
+function saveReaderSettings()
+{
+    var font_size = $('#story_body').css('font-size');
+    var theme = g_current_theme;
+    
+    var settings = {
+        font_size: font_size,
+        theme: theme
+    };
+    var json = JSON.stringify(settings);
+    
+    window.localStorage['reader_settings'] = json;
+}
+function loadReaderSettings()
+{
+    if( 'reader_settings' in window.localStorage )
+    {
+        var json = window.localStorage['reader_settings'];
+        if( json.length > 0 )
+        {
+            try
+            {
+                var settings = JSON.parse(json);
+                if( 'font_size' in settings )
+                {
+                    var size = settings.font_size;
+                    if( size > MIN_FONT_SIZE && size < MAX_FONT_SIZE )
+                    {
+                        $('#story_body').css('font-size',size + 'px')
+                    }
+                }
+                if( 'theme' in settings )
+                {
+                    readerSetTheme(settings.theme);
+                }
+            }
+            catch(e)
+            {
+            }
+        }
+    }
+}
+
 function renderStory(story,node)
 {
     g_story_data = story;
@@ -350,6 +393,7 @@ function clickFontSmaller()
     {
         $('#story_body').css('font-size',new_size + 'px');
         readerFixMetrics();
+        saveReaderSettings();
     }
 }
 function clickFontLarger()
@@ -361,6 +405,7 @@ function clickFontLarger()
     {
         $('#story_body').css('font-size',new_size + 'px');
         readerFixMetrics();
+        saveReaderSettings();
     }
 }
 
@@ -415,6 +460,11 @@ function readerFixMetrics()
 }
 
 function clickTheme(new_theme)
+{
+    readerSetTheme(new_theme);
+    saveReaderSettings();
+}
+function readerSetTheme(new_theme)
 {
     var old_theme = g_current_theme;
     $('body').removeClass(old_theme);

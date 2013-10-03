@@ -27,7 +27,14 @@ exports.queryFromPool = function(sql,values,callback)
         {
             connection.query(sql,values,function(err, result)
             {
-                connection.release();
+                try
+                {
+                    connection.release();
+                }
+                catch( e )
+                {
+                    console.log("Release exception: " + e);
+                }
                 callback(err,result);
             });
         }

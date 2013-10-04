@@ -32,6 +32,7 @@
 		2D9A292D17F1E3B900F0FDEC /* home.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = home.html; sourceTree = "<group>"; };
 		2D9A292E17F3587E00F0FDEC /* stream.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = stream.js; sourceTree = "<group>"; };
 		2D9A292F17F39AFD00F0FDEC /* frag_reader.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = frag_reader.html; sourceTree = "<group>"; };
+		2D9A293017FF39EC00F0FDEC /* frag_ga.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = frag_ga.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -134,6 +135,7 @@
 				2D9A292B17F1E1EF00F0FDEC /* waitlist.html */,
 				2D9A292C17F1E1FA00F0FDEC /* fail.html */,
 				2D9A292F17F39AFD00F0FDEC /* frag_reader.html */,
+				2D9A293017FF39EC00F0FDEC /* frag_ga.html */,
 			);
 			path = views;
 			sourceTree = "<group>";

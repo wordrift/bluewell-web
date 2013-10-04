@@ -66,14 +66,15 @@ function readerReady()
         onClick: readerClick
     };
     $('#story_body').swipe(opts);
+    loadReaderSettings();
 
-    clickTheme(g_current_theme);
+    readerSetTheme(g_current_theme);
 }
 $(document).ready(readerReady);
 
 function saveReaderSettings()
 {
-    var font_size = $('#story_body').css('font-size');
+    var font_size = parseInt( $('#story_body').css('font-size') );
     var theme = g_current_theme;
     
     var settings = {
@@ -431,8 +432,8 @@ function readerFixMetrics()
     $('#reader #story_body .text h1').css('font-size',h1_font_size + 'px');
     $('#reader #story_body .text h1').css('line-height',header_line_height + 'px');
 
-    $('#reader #story_body .text h2').css('font-size',h2_font_size + 'px');
-    $('#reader #story_body .text h2').css('line-height',header_line_height + 'px');    
+    $('#reader #story_body .text h2,h3').css('font-size',h2_font_size + 'px');
+    $('#reader #story_body .text h2,h3').css('line-height',header_line_height + 'px');
     
     var lines = Math.floor( available_height / line_height );
     

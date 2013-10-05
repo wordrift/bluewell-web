@@ -69,6 +69,8 @@ function readerReady()
     loadReaderSettings();
 
     readerSetTheme(g_current_theme);
+    
+    $(window).resize(readerFixMetrics);
 }
 $(document).ready(readerReady);
 
@@ -414,11 +416,7 @@ function readerFixMetrics()
 {
     var metrics = THEME_METRICS[g_current_theme];
 
-    var body_height = $('#story_body').height();
-    var body_margin_top = parseInt( $('#story_body').css('margin-top') );
-    var body_margin_bottom = parseInt( $('#story_body').css('margin-bottom') );
-    
-    var total_height = body_height + body_margin_top + body_margin_bottom;
+    var total_height = $('#story_body_container').height();
     
     var available_height = total_height - ( 2 * MIN_MARGIN );
     

@@ -13,6 +13,7 @@ function showReader()
 {
     $('#home').hide();
     $('#reader').show();
+    window.scrollTo(0,0);
     
     getCurrentStory(function(err,story,node)
     {

@@ -109,10 +109,10 @@ function renderStory(story,node)
     }
     html += " </div>";
     html += "</div>";
-    html += "<div class='text'>";
+    html += "<div class='text styled_text'>";
     html += story.text;
     html += "</div>";
-    html += "<div class='author_notes'>";
+    html += "<div class='author_notes styled_text'>";
     html += story.author_notes;
     html += "</div>";
     html += "<div class='spacer'></div>";
@@ -405,11 +405,11 @@ function readerFixMetrics()
     var h1_font_size = 1.5 * font_size;
     var h2_font_size = 1.25 * font_size;
     var header_line_height = line_height * 2;
-    $('#reader #story_body .text h1').css('font-size',h1_font_size + 'px');
-    $('#reader #story_body .text h1').css('line-height',header_line_height + 'px');
+    $('#reader #story_body .styled_text h1').css('font-size',h1_font_size + 'px');
+    $('#reader #story_body .styled_text h1').css('line-height',header_line_height + 'px');
 
-    $('#reader #story_body .text h2,h3').css('font-size',h2_font_size + 'px');
-    $('#reader #story_body .text h2,h3').css('line-height',header_line_height + 'px');
+    $('#reader #story_body .styled_text h2,h3').css('font-size',h2_font_size + 'px');
+    $('#reader #story_body .styled_text h2,h3').css('line-height',header_line_height + 'px');
     
     var lines = Math.floor( available_height / line_height );
     

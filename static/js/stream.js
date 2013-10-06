@@ -194,19 +194,28 @@ function fetchStoryById(story_id,callback)
         return;
     }
 
+    var story = false;
     var key = "story_{0}".format(story_id);
     if( key in window.localStorage )
     {
         try
         {
             var json = window.localStorage[key];
-            var story = JSON.parse(json);
-            g_story_map[story_id] = story;
-            callback(null,story);
-            return;
+            story = JSON.parse(json);
         }
         catch(e)
         {
+        }
+    }
+    
+    var headers = {}
+    if( story && story.updated_ts )
+    {
+        var ts = Date.parse(story.updated_ts);
+        if( ts )
+        {
+            var d = new Date(ts);
+            headers['If-Modified-Since'] = d.toUTCString();
         }
     }
     
@@ -215,17 +224,38 @@ function fetchStoryById(story_id,callback)
         type: 'GET',
         url: '/api/1/story/' + story_id,
         dataType: 'json',
+        headers: headers,
         success: function(data)
         {
-            window.localStorage[key] = JSON.stringify(data);
-            g_story_map[story_id] = data;
-            
-            callback(null,data);
+            if( data )
+            {
+                story = data;
+                window.localStorage[key] = JSON.stringify(story);
+                g_story_map[story_id] = story;
+                callback(null,story);
+            }
+            else if( story )
+            {
+                g_story_map[story_id] = story;
+                callback(null,story);
+            }
+            else
+            {
+                callback(true);
+            }
         },
         error: function()
         {
-            window.alert("Failed to get story data.");
-            callback(true);
+            console.log("Failed to get story data: " + story_id);
+            if( story )
+            {
+                g_story_map[story_id] = story;
+                callback(null,story);
+            }
+            else
+            {
+                callback(true);
+            }
         }
     });
 }

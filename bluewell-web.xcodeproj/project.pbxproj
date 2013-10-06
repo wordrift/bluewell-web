@@ -13,6 +13,7 @@
 		2D22A63717F2786100E19532 /* home.less */ = {isa = PBXFileReference; lastKnownFileType = text; path = home.less; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.css; };
 		2D22A63817F28DBE00E19532 /* stream.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = stream.js; sourceTree = "<group>"; };
 		2D22AB4A180121F800E19532 /* common.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = common.js; sourceTree = "<group>"; };
+		2D22AB4B1801DAC000E19532 /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = index.js; path = admin/index.js; sourceTree = "<group>"; };
 		2D3D03F417E6743800458D4C /* app.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = app.js; sourceTree = "<group>"; };
 		2D3D03F517E6743800458D4C /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
 		2D3D03F617E6743800458D4C /* db.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = db.js; sourceTree = "<group>"; };
@@ -37,6 +38,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		2D22AB4C1801DAC800E19532 /* admin */ = {
+			isa = PBXGroup;
+			children = (
+				2D22AB4B1801DAC000E19532 /* index.js */,
+			);
+			name = admin;
+			sourceTree = "<group>";
+		};
 		2D3D03ED17E6730800458D4C = {
 			isa = PBXGroup;
 			children = (
@@ -77,6 +86,7 @@
 		2D3D040117E6760500458D4C /* pages */ = {
 			isa = PBXGroup;
 			children = (
+				2D22AB4C1801DAC800E19532 /* admin */,
 				2D3D040217E6760500458D4C /* index.js */,
 			);
 			path = pages;

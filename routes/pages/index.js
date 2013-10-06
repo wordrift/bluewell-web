@@ -1,6 +1,7 @@
 
 var db = require('../../db.js');
 var user = require('../../user.js');
+var admin = require('./admin/index.js');
 
 exports.addRoutes = function(app,prefix)
 {
@@ -9,6 +10,8 @@ exports.addRoutes = function(app,prefix)
     app.get(prefix + '/reader', user.checkSessionForPage, reader);
     app.get(prefix + '/waitlist', waitlist);
     app.get(prefix + '/fail', fail);
+    
+    admin.addRoutes(app,prefix + '/admin')
 };
 
 function index(req,res)

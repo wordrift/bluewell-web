@@ -137,6 +137,24 @@ exports.checkSessionForPage = function(req,res,next)
         function() { res.redirect('/'); }
     );
 }
+exports.checkAdmin = function(req,res,next)
+{
+    return validCheck(req,res,next,
+        function(err)
+        {
+            if( user.is_admin )
+            {
+                return next(err);
+            }
+            else
+            {
+                res.redirect('/');
+            }
+        },
+        function() { res.redirect('/'); }
+    );
+}
+
 exports.checkSessionForApi = function(req,res,next)
 {
     return validCheck(req,res,next,
@@ -188,7 +206,7 @@ exports.isValidSession = function(req,callback)
         }
         else
         {
-            var sql = "SELECT user.user_id,user.email,user.display_name,user.current_stream_node_id ";
+            var sql = "SELECT user.user_id,user.email,user.display_name,user.current_stream_node_id,user.is_admin ";
             sql += " FROM user_session ";
             sql += " JOIN user ON user.user_id = user_session.user_id "
             sql += " WHERE session_key = ? AND user.is_active = 1";

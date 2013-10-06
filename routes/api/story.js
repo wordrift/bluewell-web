@@ -4,8 +4,7 @@ var db = require('../../db.js');
 exports.getStory = function(req, res)
 {
     var story_id = req.params.story_id;
-    res.header("Cache-Control", "no-cache, no-store, must-revalidate");
-    res.header("Pragma", "no-cache");
+    res.header("Cache-Control", "public, max-age: 600");
     
     var sql = "SELECT * FROM story ";
     sql += " NATURAL JOIN story_author ";
@@ -31,6 +30,9 @@ exports.getStory = function(req, res)
                 {
                     story.author_list.push(results[i].story_author.author);
                 }
+                console.log(story.updated_ts);
+                console.log(story.updated_ts.toUTCString());
+                res.header("Last-Modified",story.updated_ts.toUTCString());
                 res.send(story);
             }
             else

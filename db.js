@@ -5,6 +5,7 @@ var mysql = require('mysql');
 
 var db_config = config.db;
 db_config.multipleStatements = true;
+db_config.timezone = 'UTC';
 //db_config.debug = true;
 
 exports.db_pool = mysql.createPool(db_config);

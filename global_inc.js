@@ -48,7 +48,9 @@ global.cleanHTML = function(text)
         'u': 'u',
         'strong': 'b',
         'sub': 'sub',
-        'h2': 'h1',
+        'h1': 'h1',
+        'h2': 'h2',
+        'h3': 'h3',
         'ins': 'u',
         'del': 's',
         's': 's',
@@ -86,7 +88,14 @@ global.cleanHTML = function(text)
         text = text.replace(opt.search,opt.replace);
     }
 
+    // Consolidate whitespace
     text = text.replace(/[\s\r\n]+/g,' ');
+    
+    // Replace empty paragraphs at end of story
+    text = text.replace(/\s*<p>\s*<\/p>\s*$/i,'');
+
+    // Remove whitespace at end of story
+    text = text.replace(/\s*$/i,'');
     
     return text;
 };

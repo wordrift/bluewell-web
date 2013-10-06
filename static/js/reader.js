@@ -390,10 +390,12 @@ function readerFixMetrics()
 {
     var metrics = THEME_METRICS[g_current_theme];
     
+    /*
     var container_width = $('#story_body_container').width();
     var padding_width = parseInt( $('#story_body').css('padding-left') );
     var body_width = container_width - 2*padding_width;
     $('#story_body').css('width',body_width + 'px');
+    */
 
     var available_height = $('#story_body_container').height();
     var font_size = parseInt( $('#story_body').css('font-size') );

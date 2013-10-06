@@ -25,7 +25,6 @@
 		2D3D040217E6760500458D4C /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
 		2D3D040A17E6760500458D4C /* reader.less */ = {isa = PBXFileReference; lastKnownFileType = text; path = reader.less; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.css; };
 		2D3D041217E6760500458D4C /* reader.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = reader.js; sourceTree = "<group>"; };
-		2D3D042017E6760500458D4C /* reader.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = reader.html; sourceTree = "<group>"; };
 		2D3D042117E677EA00458D4C /* global_inc.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = global_inc.js; sourceTree = "<group>"; };
 		2D3D042217E6780700458D4C /* story.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = story.js; sourceTree = "<group>"; };
 		2D9A292A17F1013A00F0FDEC /* user.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = user.js; sourceTree = "<group>"; };
@@ -143,7 +142,6 @@
 			children = (
 				2D22A63517EFF3B900E19532 /* index.html */,
 				2D9A292D17F1E3B900F0FDEC /* home.html */,
-				2D3D042017E6760500458D4C /* reader.html */,
 				2D9A292B17F1E1EF00F0FDEC /* waitlist.html */,
 				2D9A292C17F1E1FA00F0FDEC /* fail.html */,
 				2D9A292F17F39AFD00F0FDEC /* frag_reader.html */,

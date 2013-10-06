@@ -7,7 +7,6 @@ exports.addRoutes = function(app,prefix)
 {
     app.get(prefix + '/', index);
     app.get(prefix + '/home', user.checkSessionForPage, home);
-    app.get(prefix + '/reader', user.checkSessionForPage, reader);
     app.get(prefix + '/waitlist', waitlist);
     app.get(prefix + '/fail', fail);
     
@@ -31,17 +30,6 @@ function index(req,res)
             res.render('index');
         }
     });
-}
-
-function reader(req,res)
-{
-    var story_id = req.param('story_id');
-    if( !story_id )
-    {
-        story_id = 1624;
-    }
-    var params = { story_id: story_id };
-    res.render('reader',params);
 }
 function home(req,res)
 {

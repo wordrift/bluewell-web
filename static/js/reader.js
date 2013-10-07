@@ -249,11 +249,22 @@ function readerClick(x,y)
 {
     var width = $('#story_body').width();
     
-    if( x < width / 3 )
+    if( width > 700 )
+    {
+        var boundry_left = width / 4;
+        var boundry_right = width * 3 / 4;
+    }
+    else
+    {
+        var boundry_left = width / 3;
+        var boundry_right = width * 2 / 3;
+    }
+    
+    if( x < boundry_left )
     {
         readerPageLeft();
     }
-    else if( x > width * 2 / 3 )
+    else if( x > boundry_right )
     {
         readerPageRight();
     }

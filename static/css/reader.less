@@ -1,5 +1,6 @@
 
 @iphone_blue: #007aff;
+@icon_inactive: #aaa;
 
 body {
     margin: 0;
@@ -13,24 +14,12 @@ body {
         position: absolute;
         top: 0px;
         bottom: 0px;
-        left: 10px;
-        right: 10px;
+        left: 0px;
+        right: 0px;
         padding-top: 10px;
         padding-bottom: 10px;
         -webkit-tap-highlight-color: rgba(0,0,0,0);
         
-        @media (min-width:700px) {
-            left: 20px;
-            right: 20px;
-        }
-        @media (min-width:800px) {
-            left: 30px;
-            right: 30px;
-        }
-        @media (min-width:1100px) {
-            left: 60px;
-            right: 60px;
-        }
     }
 
     #story_body {
@@ -116,6 +105,21 @@ body {
         .spacer {
             height: 440px;
         }
+        
+        .story_header, .text, .author_notes {
+            @media (min-width:700px) {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            @media (min-width:800px) {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+            @media (min-width:1100px) {
+                padding-left: 60px;
+                padding-right: 60px;
+            }
+        }
     }
 
     #top_bar {
@@ -175,7 +179,7 @@ body {
                 svg {
                     height: 22px;
                     path {
-                        fill: #ccc;
+                        fill: @icon_inactive;
                     }
                 }
                 &.active {
@@ -197,7 +201,7 @@ body {
                     height: 22px;
                     
                     path {
-                        fill: #ccc;
+                        fill: @icon_inactive;
                         transform: rotate(180deg);
                         transform-origin: 50%;
                         -ms-transform: rotate(180deg);
@@ -225,7 +229,7 @@ body {
                     height: 22px;
                     
                     path {
-                        fill: #ccc;
+                        fill: @icon_inactive;
                         transform: rotate(180deg);
                         transform-origin: 50%;
                         -ms-transform: rotate(180deg);
@@ -296,7 +300,7 @@ body {
                     svg {
                         height: 26px;
                         path {
-                            stroke: #ccc;
+                            stroke: @icon_inactive;
                         }
                     }
                 }
@@ -305,7 +309,7 @@ body {
                     svg {
                         height: 26px;
                         polyline, line, rect, path {
-                            stroke: #ccc;
+                            stroke: @icon_inactive;
                         }
                     }
                 }
@@ -443,10 +447,10 @@ body {
     font-family: "Helvetica", sans-serif;
 }
 .theme_baskerville #story_body {
-    font-family: "Baskerville", serif;
+    font-family: "Baskerville", "Libre Baskerville", serif;
 }
 .theme_palatino #story_body {
-    font-family: "Palatino", serif;
+    font-family: "Palatino Linotype", "Book Antiqua", "Palatino", "Quattrocento", serif;
 }
 body.theme_midnight {
     background: black;

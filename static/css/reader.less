@@ -273,11 +273,41 @@ body {
                 
                 .text {
                     display: inline-block;
-                    padding-top: 10px;
+                    padding-top: 9px;
                     color: @iphone_blue;
-                    font-size: 20px;
+                    font-size: 22px;
                     font-family: 'Ariel', serif;
                     vertical-align: top;
+                }
+                &.rate {
+                    padding-top: 8px;
+                    svg {
+                        height: 26px;
+                        polygon {
+                            stroke: @iphone_blue;
+                        }
+                    }
+                    &.active svg polygon {
+                        fill: @iphone_blue;
+                    }
+                }
+                &.highlights {
+                    padding-top: 8px;
+                    svg {
+                        height: 26px;
+                        path {
+                            stroke: #ccc;
+                        }
+                    }
+                }
+                &.settings {
+                    padding-top: 8px;
+                    svg {
+                        height: 26px;
+                        polyline, line, rect, path {
+                            stroke: #ccc;
+                        }
+                    }
                 }
             }
         }

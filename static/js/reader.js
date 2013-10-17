@@ -18,6 +18,9 @@ var THEME_METRICS = {
     theme_palatino: {
         line_height_ratio: 1.5
     },
+    theme_roboto: {
+        line_height_ratio: 1.5
+    },
     theme_midnight: {
         line_height_ratio: 1.5
     }
@@ -426,6 +429,8 @@ function readerFixMetrics()
     
     var used_height = lines * line_height;
     $('#story_body').css('height',used_height + 'px');
+    var spacer_height = used_height - 1;
+    $('#reader #story_body .spacer').css('height',spacer_height + 'px');
 
     var scroll_top = $('#story_body').scrollTop();
     var new_scroll_top = Math.floor(scroll_top / used_height) * used_height;

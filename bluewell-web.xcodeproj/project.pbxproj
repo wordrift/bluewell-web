@@ -34,6 +34,8 @@
 		2D9A292E17F3587E00F0FDEC /* stream.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = stream.js; sourceTree = "<group>"; };
 		2D9A292F17F39AFD00F0FDEC /* frag_reader.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = frag_reader.html; sourceTree = "<group>"; };
 		2D9A293017FF39EC00F0FDEC /* frag_ga.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = frag_ga.html; sourceTree = "<group>"; };
+		2DB0F14C181460DB005F5964 /* story.ejs */ = {isa = PBXFileReference; lastKnownFileType = text; path = story.ejs; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.html; };
+		2DB0F14D1814C861005F5964 /* end_of_story.ejs */ = {isa = PBXFileReference; lastKnownFileType = text; path = end_of_story.ejs; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.html; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -133,6 +135,8 @@
 		2D3D041417E6760500458D4C /* templates */ = {
 			isa = PBXGroup;
 			children = (
+				2DB0F14C181460DB005F5964 /* story.ejs */,
+				2DB0F14D1814C861005F5964 /* end_of_story.ejs */,
 			);
 			path = templates;
 			sourceTree = "<group>";

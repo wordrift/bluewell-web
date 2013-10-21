@@ -14,6 +14,32 @@ global.mergeObjects = function(obj1,obj2)
     return obj3;
 };
 
+function wrap_text_nodes(text)
+{
+    var jsdom = require("jsdom").jsdom;
+    var document = jsdom(text);
+    
+    var new_text = "";
+    for( var i = 0 ; i < document.childNodes.length ; ++i )
+    {
+        var child = document.childNodes[i];
+        if( child.nodeType == 3 )
+        {
+            var node_value = child.nodeValue.trim();
+            if( node_value.length > 0 )
+            {
+                new_text += "<p>" + node_value + "</p>";
+            }
+        }
+        else
+        {
+            new_text += child.outerHTML;
+        }
+    }
+    
+    return new_text;
+}
+
 global.cleanHTML = function(text)
 {
     if( !text )
@@ -88,6 +114,8 @@ global.cleanHTML = function(text)
         text = text.replace(opt.search,opt.replace);
     }
 
+    text = wrap_text_nodes(text);
+    
     // Consolidate whitespace
     text = text.replace(/[\s\r\n]+/g,' ');
     

@@ -17,6 +17,7 @@
     "moment": "*",
     "escape-html": "*",
     "passport": "*",
-    "passport-facebook": "*"
+    "passport-facebook": "*",
+    "jsdom": "*"
   }
 }

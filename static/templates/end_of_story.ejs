@@ -1,0 +1,23 @@
+<div class='end_story_page page'>
+    <div class='top_box'>
+        <div class='top_line'>You just finished reading...</div>
+        <div class='story_title'><%= story.title %></div>
+        <div class='story_author_one'><%= story.author_list[0] %></div>
+    </div>
+    <div class='rating_box'>
+        <div class='stars'>
+        </div>
+        <div class='text'>Rate this Story</div>
+    </div>
+    <div class='share_box'>
+        Placeholder
+    </div>
+    <div class='next'>
+        <div class='top_line'>Swipe to read...</div>
+        <div class='next_story_title'><%= next_story.title %></div>
+        <% if( next_story.subtitle ) { %>
+            <div class='next_story_subtitle'><%= next_story.subtitle %></div>
+        <% } %>
+        <div class='next_story_author_one'><%= next_story.author_list[0] %></div>
+    </div>
+</div>

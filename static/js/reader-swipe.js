@@ -246,7 +246,7 @@
             var resistance = 1;
             deltaX = deltaX / resistance;
             
-            var new_left = deltaX - this.startLeftPosition;
+            var new_left = this.startLeftPosition - deltaX;
             this.setLeftPosition(new_left);
             
             var left = this.getLeftPosition();
@@ -259,7 +259,7 @@
         },
         handleMoveDone: function() {
             var left = this.getLeftPosition();
-            var deltaSL = left - this.startLeftPosition;
+            var deltaSL = this.startLeftPosition - left;
             var deltaT = Number(new Date()) - this.startTime;
             
             var isLeft = true;
@@ -282,10 +282,10 @@
             }
         },
         getLeftPosition: function() {
-            return this.container.position().left;
+            return this.container.scrollLeft();
         },
         setLeftPosition: function(new_left) {
-            this.container.css('left',new_left + "px");
+            this.container.scrollLeft(new_left);
         }
     };
     

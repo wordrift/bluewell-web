@@ -1,12 +1,12 @@
 <div class='pages'>
-    <div class='page full_story'>
-        <h1 class='story_title'><%= story.title %></h1>
+    <div class='full_story'>
+        <h1 class='story_title ignore_words'><%= story.title %></h1>
         <% if( story.subtitle )  { %>
-            <h2 class='story_subtitle'><%= story.subtitle %></h2>
+            <h2 class='story_subtitle ignore_words'><%= story.subtitle %></h2>
         <% } %>
-        <div class='by'>By:</div>
+        <div class='by ignore_words'>By:</div>
         <% for( var i = 0 ; i < story.author_list.length ; ++i ) { %>
-            <div class='author'><%= story.author_list[i] %></div>
+            <div class='author ignore_words'><%= story.author_list[i] %></div>
         <% } %>
         <%= story.text %>
         <% if( story.author_notes ) { %>

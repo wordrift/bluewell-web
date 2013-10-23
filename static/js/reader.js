@@ -185,7 +185,7 @@ function readerPageRight()
     {
         if( hasNextStory() )
         {
-            readerNext();
+            readerNext("start");
         }
         else
         {
@@ -209,7 +209,7 @@ function readerPageLeft()
     {
         if( hasPreviousStory() )
         {
-            readerPrev();
+            readerPrev("end");
         }
         else
         {
@@ -319,7 +319,7 @@ function maybeRenderStory()
         renderStory();
     }
 }
-function renderStory(story,node,load_end_page)
+function renderStory(story,node,load_page)
 {
     console.log("renderStory");
     if( story )
@@ -344,7 +344,11 @@ function renderStory(story,node,load_end_page)
     setPageSizes();
     countPageWords();
     
-    if( load_end_page )
+    if( load_page == 'start' )
+    {
+        scrollToPage(0,true);
+    }
+    else if( load_page == 'end' )
     {
         scrollToPage(g_page_count - 1,true);
     }
@@ -597,25 +601,25 @@ function readerSetTheme(new_theme)
     readerFixMetrics();
 }
 
-function readerPrev()
+function readerPrev(load_page)
 {
     if( hasPreviousStory() )
     {
         streamPrevious();
-        getCurrentStory(function(err,story,node)
+        getCurrentStory(function(err,story,load_page)
         {
             renderStory(story,node,true);
         });
     }
 }
-function readerNext()
+function readerNext(load_page)
 {
     if( hasNextStory() )
     {
         streamNext();
         getCurrentStory(function(err,story,node)
         {
-            renderStory(story,node);
+            renderStory(story,node,load_page);
         });
     }
 }

@@ -404,7 +404,7 @@ function countPageWords()
         word_count += words;
     });
     g_page_list.splice(0,1);
-    g_page_list.splice(-1,1);
+    g_page_list.splice(-2,2);
 }
 function readerSeekToWord(word_num)
 {
@@ -606,9 +606,9 @@ function readerPrev(load_page)
     if( hasPreviousStory() )
     {
         streamPrevious();
-        getCurrentStory(function(err,story,load_page)
+        getCurrentStory(function(err,story,node)
         {
-            renderStory(story,node,true);
+            renderStory(story,node,load_page);
         });
     }
 }

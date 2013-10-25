@@ -278,7 +278,7 @@
             }
             else
             {
-                this.opts.onClick(this.startScreenX,this.starScreenY);
+                this.opts.onClick(this.startScreenX,this.startScreenY);
             }
         },
         getLeftPosition: function() {

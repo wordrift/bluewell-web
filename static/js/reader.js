@@ -35,6 +35,7 @@ var g_page_count = 0;
 var g_page_list = [];
 var g_reader_width = 0;
 var g_reader_height = 0;
+var g_inhibitClickReader = false;
 
 function readerReady()
 {
@@ -43,7 +44,7 @@ function readerReady()
 
     var opts = {
         onValidSwipe: readerValidSwipe,
-        onClick: readerClick
+        onClick: function(x,y) { window.setTimeout(clickReader,1,x,y); }
     };
     $('#story_body').swipe(opts);
     loadReaderSettings();
@@ -112,33 +113,41 @@ function readerValidSwipe(is_left)
         readerPageRight();
     }
 }
-function readerClick(x,y)
+function clickReader(x,y)
 {
-    var width = $('#reader #story_body').width();
-    
-    if( width > 700 )
-    {
-        var boundry_left = width / 4;
-        var boundry_right = width * 3 / 4;
-    }
-    else
-    {
-        var boundry_left = width / 3;
-        var boundry_right = width * 2 / 3;
-    }
-    
-    if( x < boundry_left )
-    {
-        readerPageLeft();
-    }
-    else if( x > boundry_right )
-    {
-        readerPageRight();
-    }
-    else
+    if( g_inhibitClickReader )
     {
         scrollToPage(g_curr_page,true);
-        clickReaderCenter();
+        g_inhibitClickReader = false;
+    }
+    else
+    {
+        var width = $('#reader #story_body').width();
+        
+        if( width > 700 )
+        {
+            var boundry_left = width / 4;
+            var boundry_right = width * 3 / 4;
+        }
+        else
+        {
+            var boundry_left = width / 3;
+            var boundry_right = width * 2 / 3;
+        }
+        
+        if( x < boundry_left )
+        {
+            readerPageLeft();
+        }
+        else if( x > boundry_right )
+        {
+            readerPageRight();
+        }
+        else
+        {
+            scrollToPage(g_curr_page,true);
+            clickReaderCenter();
+        }
     }
 }
 
@@ -570,6 +579,8 @@ function makePages(args)
     var end_of_story = g_ejs_end_of_story.render(args);
     pages_col.append(end_of_story);
     g_page_count++;
+    
+    pages_col.find('.end_story_page .stars svg').click(clickStar);
 
     var html = "<div class='page last pad'></div>";
     pages_col.append(html);
@@ -580,6 +591,12 @@ function setPageSizes()
     var padding_width = parseInt( $('#reader #story_body .page').css('padding-left') );
     var page_width = container_width - 2*padding_width;
     $('#reader #story_body .page').css('width',page_width + 'px');
+}
+
+function clickStar()
+{
+    console.log("clickStar!");
+    g_inhibitClickReader = true;
 }
 
 

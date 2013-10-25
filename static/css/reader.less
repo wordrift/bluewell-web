@@ -513,6 +513,47 @@ body {
             }
         }
     }
+    #rating_bar {
+        display: none;
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        height: 80px;
+        background: whitesmoke;
+        border-top: 1px solid #bbb;
+        
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        
+        .label {
+            margin-top: 6px;
+            color: black;
+            font-size: 18px;
+            font-family: Helvetica, sans-serif;
+            text-align: center;
+        }
+        
+        .stars {
+            padding-top: 10px;
+            text-align: center;
+            span {
+                svg {
+                    height: 35px;
+                    polygon {
+                        stroke: @icon_inactive;
+                    }
+                }
+                &.selected svg polygon {
+                    fill: @iphone_blue;
+                }
+            }
+        }
+    }
 }
 .theme_standard #story_body {
     font-family: "Georgia", serif;

@@ -68,7 +68,7 @@ function streamUpdate()
         },
         error: function()
         {
-            window.alert("Failed to get stream data.");
+            console.log("Failed to get stream data.");
         }
     });
 }
@@ -121,7 +121,7 @@ function streamSyncNodes()
             },
             error: function()
             {
-                window.alert("Failed to sync stream data.");
+                console.log("Failed to sync stream data.");
                 g_is_syncing = false;
             }
         });

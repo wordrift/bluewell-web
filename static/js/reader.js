@@ -30,6 +30,7 @@ var g_current_theme = 'theme_standard';
 var g_story_data = {};
 var g_story_node = {};
 var g_ejs_story = false;
+var g_ejs_end_story_page = false;
 var g_curr_page = 0;
 var g_page_count = 0;
 var g_page_list = [];
@@ -40,7 +41,7 @@ var g_inhibitClickReader = false;
 function readerReady()
 {
     g_ejs_story = new EJS({ url: '/templates/story.ejs' });
-    g_ejs_end_of_story = new EJS({ url: '/templates/end_of_story.ejs' });
+    g_ejs_end_story_page = new EJS({ url: '/templates/end_story_page.ejs' });
 
     var opts = {
         onValidSwipe: readerValidSwipe,
@@ -148,42 +149,6 @@ function clickReader(x,y)
             scrollToPage(g_curr_page,true);
             clickReaderCenter();
         }
-    }
-}
-
-function isEndOfStoryPage()
-{
-    if( $('#reader #story_body .end_story_page').is(':in-viewport') )
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-function scrollToEndOfStoryPage()
-{
-    var scroll_top = $('#reader #story_body').scrollTop();
-    var end_of_story_top = $('#reader #story_body .end_story_page').position().top + scroll_top;
-    $('#reader #story_body').scrollTop(end_of_story_top);
-}
-function isLastStoryPage()
-{
-    var scroll_top = $('#reader #story_body').scrollTop();
-    var body_height = parseInt( $('#reader #story_body').css('height') );
-    var scroll_bottom = scroll_top + body_height;
-    
-    var end_of_story = $('#reader #story_body .bottom_story_spacer').position().top + scroll_top;
-    
-    if( end_of_story >= scroll_top
-        && end_of_story <= scroll_bottom )
-    {
-        return true;
-    }
-    else
-    {
-        return false;
     }
 }
 
@@ -353,6 +318,16 @@ function renderStory(story,node,load_page)
     setPageSizes();
     countPageWords();
     
+    $('#reader #story_body .end_story_page .stars span').click(clickStar);
+    if( g_story_node.rating )
+    {
+        readerSetStars(g_story_node.rating);
+    }
+    else
+    {
+        readerSetStars(0);
+    }
+    
     if( load_page == 'start' )
     {
         scrollToPage(0,true);
@@ -484,7 +459,10 @@ function makePages(args)
     var html = "<div class='page first pad'></div>";
     pages_col.append(html);
 
-    var page_height = $('#story_body_container').height();
+    var body_height = $('#story_body').height();
+    var padding_height = parseInt( $('#reader #story_body .page').css('padding-top') );
+    var page_height = body_height - 2*padding_height;
+    
     var container_width = $('#reader #story_body').width();
     var padding_width = parseInt( $('#reader #story_body .page').css('padding-left') );
     var page_width = container_width - 2*padding_width;
@@ -576,29 +554,46 @@ function makePages(args)
             }
         }
     }
-    var end_of_story = g_ejs_end_of_story.render(args);
-    pages_col.append(end_of_story);
+    var end_story_page = g_ejs_end_story_page.render(args);
+    pages_col.append(end_story_page);
     g_page_count++;
     
-    pages_col.find('.end_story_page .stars svg').click(clickStar);
-
     var html = "<div class='page last pad'></div>";
     pages_col.append(html);
 }
 function setPageSizes()
 {
-    var container_width = $('#reader #story_body').width();
+    var body_width = $('#reader #story_body').width();
     var padding_width = parseInt( $('#reader #story_body .page').css('padding-left') );
-    var page_width = container_width - 2*padding_width;
+    var page_width = body_width - 2*padding_width;
     $('#reader #story_body .page').css('width',page_width + 'px');
+    
+    var body_height = $('#story_body').height();
+    $('#reader #story_body .end_story_page').css('height',body_height + 'px');
+    $('#reader #story_body .end_story_page').css('width',body_width + 'px');
 }
 
 function clickStar()
 {
-    console.log("clickStar!");
     g_inhibitClickReader = true;
+    
+    var star_id = $(this).attr('id');
+    var star_num = parseInt( star_id.substr(5) );
+    
+    readerSetStars(star_num);
+    
+    streamSaveRating(star_num);
+    
+    readerHideOverlays(true);
 }
-
+function readerSetStars(num)
+{
+    $('#reader .end_story_page .stars span').removeClass('selected');
+    for( var i = 1 ; i <= num ; ++i )
+    {
+        $('#reader .end_story_page .stars #star_' + i).addClass('selected');
+    }
+}
 
 function clickTheme(new_theme)
 {

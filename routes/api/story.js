@@ -30,8 +30,6 @@ exports.getStory = function(req, res)
                 {
                     story.author_list.push(results[i].story_author.author);
                 }
-                console.log(story.updated_ts);
-                console.log(story.updated_ts.toUTCString());
                 res.header("Last-Modified",story.updated_ts.toUTCString());
                 res.send(story);
             }

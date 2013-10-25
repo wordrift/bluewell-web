@@ -68,9 +68,10 @@ function getStream(user,callback)
 {
     var user_id = user.user_id;
     
-    var sql = "SELECT * FROM stream_node ";
-    sql += " WHERE user_id = ? ";
-    sql += " ORDER BY story_order ASC ";
+    var sql = "SELECT stream_node.*,user_rating.rating FROM stream_node ";
+    sql += " LEFT JOIN user_rating ON user_rating.user_id = stream_node.user_id AND user_rating.story_id = stream_node.story_id ";
+    sql += " WHERE stream_node.user_id = ? ";
+    sql += " ORDER BY stream_node.story_order ASC ";
     
     db.queryFromPool(sql,user_id,callback);
 }
@@ -158,24 +159,40 @@ exports.postStream = function(req,res)
     
     async.eachSeries(update_list,function(node,next)
     {
-        var current_word = node.current_word;
-        var max_word = node.max_word;
         var stream_node_id = node.stream_node_id;
+        var story_id = node.story_id;
         var modified_ts = node.modified_ts;
         last_stream_node_id = stream_node_id;
     
         var sql = "";
         var values = [];
-        sql += "UPDATE stream_node SET current_word = ? ";
-        sql += " WHERE stream_node_id = ? AND user_id = ? ";
-        sql += " AND updated_ts < ?;";
-        values.push(current_word,stream_node_id,user_id,modified_ts);
-
-        sql += "UPDATE stream_node SET max_word = GREATEST(max_word,?) ";
-        sql += " WHERE stream_node_id = ? AND user_id = ?;";
-        values.push(max_word,stream_node_id,user_id);
-
-        //console.log(sql);
+        
+        if( 'current_word' in node )
+        {
+            var current_word = node.current_word;
+            sql += "UPDATE stream_node SET current_word = ? ";
+            sql += " WHERE stream_node_id = ? AND user_id = ? ";
+            sql += " AND updated_ts < ?;";
+            values.push(current_word,stream_node_id,user_id,modified_ts);
+        }
+        if( 'max_word' in node )
+        {
+            var max_word = node.max_word;
+            sql += "UPDATE stream_node SET max_word = GREATEST(max_word,?) ";
+            sql += " WHERE stream_node_id = ? AND user_id = ?;";
+            values.push(max_word,stream_node_id,user_id);
+        }
+        if( 'rating' in node )
+        {
+            var stars = node.rating;
+            sql += "REPLACE INTO user_rating SET ?;";
+            var args = {
+                user_id: user_id,
+                story_id: story_id,
+                rating: stars
+            }
+            values.push(args);
+        }
         
         db.queryFromPool(sql,values,function(err,results)
         {

@@ -86,9 +86,9 @@ function streamSyncNodes()
     for( var i = 0 ; i < g_stream_node_list.length ; ++i )
     {
         var node = g_stream_node_list[i];
-        if( node.modified_ts )
+        if( 'modified_obj' in node && node.modified_obj.modified_ts )
         {
-            var copy = jQuery.extend(true, {}, node);
+            var copy = jQuery.extend(true, {}, node.modified_obj);
             modified_list.push(copy);
         }
     }
@@ -109,9 +109,9 @@ function streamSyncNodes()
                     var synced_node = modified_list[i];
                     var node = findStreamNodeById(synced_node.stream_node_id);
                     
-                    if( synced_node.modified_ts == node.modified_ts )
+                    if( synced_node.modified_ts == node.modified_obj.modified_ts )
                     {
-                        node.modified_ts = false;
+                        node.modified_obj.modified_ts = false;
                     }
                 }
                     
@@ -342,11 +342,23 @@ function streamSaveProgress(current_word,max_word)
 {
     streamModifyCurrentNode({max_word: max_word,current_word: current_word});
 }
+function streamSaveRating(num)
+{
+    streamModifyCurrentNode({rating: num});
+}
 
 function streamModifyCurrentNode(props)
 {
     var modified = false;
     var node = g_stream_node_list[g_current_stream_index];
+    if( !( 'modified_obj' in node ) )
+    {
+        node.modified_obj = {
+            stream_node_id: node.stream_node_id,
+            story_id: node.story_id,
+            modified_ts: false
+        };
+    }
     
     if( 'max_word' in props )
     {
@@ -354,6 +366,7 @@ function streamModifyCurrentNode(props)
         if( max_word > node.max_word )
         {
             node.max_word = max_word;
+            node.modified_obj.max_word = max_word;
             modified = true;
         }
     }
@@ -364,13 +377,25 @@ function streamModifyCurrentNode(props)
         if( current_word != node.current_word )
         {
             node.current_word = current_word;
+            node.modified_obj.current_word = current_word;
+            modified = true;
+        }
+    }
+    
+    if( 'rating' in props )
+    {
+        var rating = props.rating;
+        if( rating != node.rating )
+        {
+            node.rating = rating;
+            node.modified_obj.rating = rating;
             modified = true;
         }
     }
     
     if( modified )
     {
-        node.modified_ts = new Date();
+        node.modified_obj.modified_ts = new Date();
         streamSaveNodes();
         streamSyncNodes();
     }

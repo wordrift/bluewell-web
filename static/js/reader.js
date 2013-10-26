@@ -27,8 +27,8 @@ var THEME_METRICS = {
 };
 
 var g_current_theme = 'theme_standard';
-var g_story_data = {};
-var g_story_node = {};
+var g_story_data = false;
+var g_story_node = false;
 var g_ejs_story = false;
 var g_ejs_end_story_page = false;
 var g_curr_page = 0;

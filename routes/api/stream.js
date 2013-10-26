@@ -68,10 +68,17 @@ function getStream(user,callback)
 {
     var user_id = user.user_id;
     
-    var sql = "SELECT stream_node.*,user_rating.rating FROM stream_node ";
-    sql += " LEFT JOIN user_rating ON user_rating.user_id = stream_node.user_id AND user_rating.story_id = stream_node.story_id ";
-    sql += " WHERE stream_node.user_id = ? ";
-    sql += " ORDER BY stream_node.story_order ASC ";
+    var sql = "";
+    sql += "\
+SELECT stream_node.*,user_rating.rating,AVG(ur2.rating) AS avg_rating \
+FROM stream_node \
+LEFT JOIN user_rating ON user_rating.user_id = stream_node.user_id AND user_rating.story_id = stream_node.story_id \
+LEFT JOIN user_rating AS ur2 ON ur2.story_id = stream_node.story_id \
+WHERE stream_node.user_id = ? \
+GROUP BY ur2.story_id \
+ORDER BY stream_node.story_order ASC \
+";
+    console.log(sql);
     
     db.queryFromPool(sql,user_id,callback);
 }
@@ -82,15 +89,33 @@ function extendStream(user,callback)
     var limit = 20;
 
     var args = [];
-    var sql = "SELECT story.story_id FROM story";
-    sql += " LEFT JOIN stream_node ON stream_node.story_id = story.story_id AND stream_node.user_id = ?";
-    sql += " WHERE stream_node.stream_node_id IS NULL";
-    sql += " ORDER BY RAND()";
-    sql += " LIMIT ?;";
+    var sql = "";
+
+    sql += "\
+SELECT sb1.story_id, RAND( ) * rating_probability_map.probability AS story_odds \
+FROM ( \
+\
+SELECT story.story_id, ROUND( IFNULL( AVG( user_rating.rating ) , 0 ) , 0 ) AS round_rating \
+FROM story \
+LEFT JOIN user_rating ON user_rating.story_id = story.story_id \
+LEFT JOIN stream_node ON stream_node.story_id = story.story_id AND stream_node.user_id = ? \
+WHERE stream_node.stream_node_id IS NULL \
+GROUP BY story.story_id \
+) AS sb1 \
+\
+JOIN rating_probability_map ON sb1.round_rating = rating_probability_map.rating \
+ORDER BY story_odds DESC \
+LIMIT ?; \
+";
+    console.log(sql);
+
     args.push(user_id,limit);
     
-    sql += " SELECT MAX(story_order) AS max_order FROM stream_node";
-    sql += " WHERE user_id = ?";
+    sql += "\
+SELECT MAX(story_order) AS max_order FROM stream_node \
+WHERE user_id = ? ;\
+";
+
     args.push(user_id);
     
     db.queryFromPool(sql,args,function(err,results)

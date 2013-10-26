@@ -640,7 +640,7 @@ function readerSetTheme(new_theme)
     $('#text_settings .themes .item').removeClass('active');
     var sel = "#text_settings .themes .item.{0}".format(new_theme);
     $(sel).addClass('active');
-    readerFixMetrics();
+    renderStory();
 }
 
 function readerPrev(load_page)

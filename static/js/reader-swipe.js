@@ -61,6 +61,7 @@
             
             this.panelIndex = 0;
             this.wheelTime = 0;
+            this.touchInProgress = false;
             this.refreshHtml();
             
             $(window).resize($.proxy(this, 'onContainerResize'));
@@ -174,12 +175,15 @@
         },
         */
         onMouseDown: function(ev, delta, deltaX, deltaY) {
-            ev.preventDefault();
-            this.container.stop(true);
-            this.mouseDown = true;
-            this.startScreenX = ev.pageX;
-            this.startScreenY = ev.pageY;
-            this.handleMoveStart(ev.pageX);
+            if( !this.touchInProgress )
+            {
+                ev.preventDefault();
+                this.container.stop(true);
+                this.mouseDown = true;
+                this.startScreenX = ev.pageX;
+                this.startScreenY = ev.pageY;
+                this.handleMoveStart(ev.pageX);
+            }
         },
         onMouseMove: function(ev, delta, deltaX, deltaY) {
             if( this.mouseDown )
@@ -199,7 +203,6 @@
             this.mouseDown = false;
         },
         onTouchStart: function(je) {
-            je.preventDefault();
             this.container.stop(true);
             
             var ev = je.originalEvent;
@@ -229,9 +232,10 @@
             }
         },
         onTouchEnd: function(je) {
-            je.preventDefault();
-            var ev = je.originalEvent;
+            this.touchInProgress = true;
+            window.setTimeout(function(){ this.touchInProgress = false; },100);
 
+            var ev = je.originalEvent;
             this.handleMoveDone();
         },
         handleMoveStart: function(startX) {

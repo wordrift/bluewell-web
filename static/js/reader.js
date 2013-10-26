@@ -36,7 +36,6 @@ var g_page_count = 0;
 var g_page_list = [];
 var g_reader_width = 0;
 var g_reader_height = 0;
-var g_inhibitClickReader = false;
 
 function readerReady()
 {
@@ -117,39 +116,46 @@ function readerValidSwipe(is_left)
 }
 function clickReader(x,y)
 {
-    if( g_inhibitClickReader )
+    if( g_curr_page == g_page_count - 1 )
     {
-        scrollToPage(g_curr_page,true);
-        g_inhibitClickReader = false;
+        var offset = $('#reader .end_story_page .stars').offset();
+        var width = $('#reader .end_story_page .stars').width();
+        var height = $('#reader .end_story_page .stars').height();
+        
+        offset.right = offset.left + width;
+        offset.bottom = offset.top + height;
+        
+        if( x >= offset.left && x <= offset.right
+            && y >= offset.top && y <= offset.bottom )
+        {
+            return;
+        }
+    }
+    var width = $('#reader #story_body').width();
+    
+    if( width > 700 )
+    {
+        var boundry_left = width / 4;
+        var boundry_right = width * 3 / 4;
     }
     else
     {
-        var width = $('#reader #story_body').width();
-        
-        if( width > 700 )
-        {
-            var boundry_left = width / 4;
-            var boundry_right = width * 3 / 4;
-        }
-        else
-        {
-            var boundry_left = width / 3;
-            var boundry_right = width * 2 / 3;
-        }
-        
-        if( x < boundry_left )
-        {
-            readerPageLeft();
-        }
-        else if( x > boundry_right )
-        {
-            readerPageRight();
-        }
-        else
-        {
-            scrollToPage(g_curr_page,true);
-            clickReaderCenter();
-        }
+        var boundry_left = width / 3;
+        var boundry_right = width * 2 / 3;
+    }
+    
+    if( x < boundry_left )
+    {
+        readerPageLeft();
+    }
+    else if( x > boundry_right )
+    {
+        readerPageRight();
+    }
+    else
+    {
+        scrollToPage(g_curr_page,true);
+        clickReaderCenter();
     }
 }
 
@@ -562,13 +568,15 @@ function setPageSizes()
 
 function clickEndStoryPageStar()
 {
-    g_inhibitClickReader = true;
-    clickStar();
+    clickStarId( $(this).attr('id') );
     readerHideOverlays(true);
 }
 function clickStar()
 {
-    var star_id = $(this).attr('id');
+    clickStarId( $(this).attr('id') );
+}
+function clickStarId(star_id)
+{
     var star_num = parseInt( star_id.substr(5) );
     
     readerSetStars(star_num);

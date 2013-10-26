@@ -55,7 +55,7 @@ function readerReady()
     $(window).resize(function()
     {
         window.scrollTo(0,0);
-        maybeRenderStory();
+        renderForResize();
     });
 }
 $(document).ready(readerReady);
@@ -279,12 +279,17 @@ function clickFontLarger()
     }
 }
 
-function maybeRenderStory()
+function renderForResize()
 {
     if( $(window).width() != g_reader_width
         || $(window).height() != g_reader_height )
     {
-        renderStory();
+        var load_page = false;
+        if( g_curr_page > 0 && g_page_count > 0 && g_curr_page == g_page_count - 1 )
+        {
+            load_page = 'end';
+        }
+        renderStory(false,false,load_page);
     }
 }
 function renderStory(story,node,load_page)
@@ -297,16 +302,10 @@ function renderStory(story,node,load_page)
     {
         g_story_node = node;
     }
-    var next_story = {
-        title: 'Next Story',
-        subtitle: '',
-        author_list: [ 'Next Author' ]
-    };
 
     readerFixMetrics();
 
-    var args = { story: g_story_data, next_story: next_story };
-    makePages(args);
+    makePages(g_story_data);
 
     setPageSizes();
     countPageWords();
@@ -335,7 +334,26 @@ function renderStory(story,node,load_page)
     }
     readerSaveProgress();
 
-    $('#reader #top_bar .current_title').html(g_story_data.title);
+    $('#reader .story_title').html(g_story_data.title);
+    $('#reader .story_author_one').html(g_story_data.author_list[0]);
+    streamGetNextStory(function(err,next_story,next_node)
+    {
+        if( !err )
+        {
+            $('#reader .next_story_title').html(next_story.title);
+            if( next_story.subtitle )
+            {
+                $('#reader .next_story_subtitle').html(next_story.subtitle);
+                $('#reader .next_story_subtitle').show();
+            }
+            else
+            {
+                $('#reader .next_story_subtitle').hide();
+            }
+            $('#reader .next_story_author_one').html(next_story.author_list[0]);
+        }
+    });
+    
     $('#reader #top_bar .nav_bar div').removeClass('active');
     if( hasPreviousStory() )
     {
@@ -443,9 +461,9 @@ function readerFixMetrics()
     var line_height = Math.ceil( font_size * metrics.line_height_ratio );
     $('#story_body').css('line-height',line_height + 'px');
 }
-function makePages(args)
+function makePages(story)
 {
-    g_ejs_story.update('paged_story',args);
+    g_ejs_story.update('paged_story',{ story: story });
 
     var pages_col = $('#paged_story .pages');
     var full_story_col = $('#paged_story .pages .full_story');
@@ -547,7 +565,7 @@ function makePages(args)
             }
         }
     }
-    var end_story_page = g_ejs_end_story_page.render(args);
+    var end_story_page = g_ejs_end_story_page.render({ story: story });
     pages_col.append(end_story_page);
     g_page_count++;
     

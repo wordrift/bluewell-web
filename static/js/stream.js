@@ -276,6 +276,30 @@ function getCurrentStory(callback)
         }
     });
 }
+function streamGetNextStory(callback)
+{
+    var next_index = g_current_stream_index + 1;
+    if( next_index >= g_stream_node_list.length )
+    {
+        callback(true);
+    }
+    else
+    {
+        var node = g_stream_node_list[next_index];
+        var story_id = node.story_id;
+        fetchStoryById(story_id,function(err,story)
+        {
+            if( err )
+            {
+                callback(err);
+            }
+            else
+            {
+                callback(null,story,node);
+            }
+        });
+    }
+}
 
 function hasPreviousStory()
 {

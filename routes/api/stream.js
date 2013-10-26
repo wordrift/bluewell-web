@@ -78,7 +78,6 @@ WHERE stream_node.user_id = ? \
 GROUP BY ur2.story_id \
 ORDER BY stream_node.story_order ASC \
 ";
-    console.log(sql);
     
     db.queryFromPool(sql,user_id,callback);
 }
@@ -107,15 +106,12 @@ JOIN rating_probability_map ON sb1.round_rating = rating_probability_map.rating 
 ORDER BY story_odds DESC \
 LIMIT ?; \
 ";
-    console.log(sql);
-
     args.push(user_id,limit);
     
     sql += "\
 SELECT MAX(story_order) AS max_order FROM stream_node \
 WHERE user_id = ? ;\
 ";
-
     args.push(user_id);
     
     db.queryFromPool(sql,args,function(err,results)

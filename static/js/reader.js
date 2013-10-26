@@ -298,22 +298,44 @@ function renderStory(story,node,load_page)
     {
         g_story_data = story;
     }
+    else
+    {
+        if( g_story_data )
+        {
+            story = g_story_data;
+        }
+        else
+        {
+            return;
+        }
+    }
     if( node )
     {
         g_story_node = node;
     }
+    else
+    {
+        if( g_story_node )
+        {
+            node = g_story_node;
+        }
+        else
+        {
+            return;
+        }
+    }
 
     readerFixMetrics();
 
-    makePages(g_story_data);
+    makePages(story);
 
     setPageSizes();
     countPageWords();
     
     $('#reader #story_body .end_story_page .stars span').click(clickEndStoryPageStar);
-    if( g_story_node.rating )
+    if( node.rating )
     {
-        readerSetStars(g_story_node.rating);
+        readerSetStars(node.rating);
     }
     else
     {
@@ -330,12 +352,12 @@ function renderStory(story,node,load_page)
     }
     else
     {
-        readerSeekToWord(g_story_node.current_word);
+        readerSeekToWord(node.current_word);
     }
     readerSaveProgress();
 
-    $('#reader .story_title').html(g_story_data.title);
-    $('#reader .story_author_one').html(g_story_data.author_list[0]);
+    $('#reader .story_title').html(story.title);
+    $('#reader .story_author_one').html(story.author_list[0]);
     streamGetNextStory(function(err,next_story,next_node)
     {
         if( !err )

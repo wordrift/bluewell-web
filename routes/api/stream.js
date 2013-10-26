@@ -78,7 +78,6 @@ WHERE stream_node.user_id = ? \
 GROUP BY ur2.story_id \
 ORDER BY stream_node.story_order ASC \
 ";
-    console.log("test update");
     db.queryFromPool(sql,user_id,callback);
 }
 

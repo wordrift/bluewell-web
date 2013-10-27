@@ -522,10 +522,11 @@ function makePages(story)
                 var last_child = new_page_col.children(':last');
                 var last_tag = last_child.prop('tagName').toLowerCase();
                 var last_classes = last_child.attr('class');
-                
-                last_child.remove();
+
                 if( last_tag == 'p' )
                 {
+                    last_child.remove();
+                    
                     var html = last_child.html();
                     var words = html.split(/\s/);
                     var i;
@@ -568,7 +569,15 @@ function makePages(story)
                 }
                 else
                 {
-                    full_story_col.prepend(last_child);
+                    if( new_page_col.children().length == 1 )
+                    {
+                        console.log("One unsplitable child, and its too big. Stupid layout, show it broken. Fix the story.");
+                    }
+                    else
+                    {
+                        last_child.remove();
+                        full_story_col.prepend(last_child);
+                    }
                 }
                 break;
             }

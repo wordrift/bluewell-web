@@ -206,10 +206,12 @@ exports.isValidSession = function(req,callback)
         }
         else
         {
-            var sql = "SELECT user.user_id,user.email,user.display_name,user.current_stream_node_id,user.is_admin ";
-            sql += " FROM user_session ";
-            sql += " JOIN user ON user.user_id = user_session.user_id "
-            sql += " WHERE session_key = ? AND user.is_active = 1";
+            var sql = "\
+SELECT user.user_id,user.email,user.display_name,user.is_admin \
+FROM user_session \
+JOIN user ON user.user_id = user_session.user_id \
+WHERE session_key = ? AND user.is_active = 1 \
+";
             var options = {
                 sql: sql,
                 nestTables: true,

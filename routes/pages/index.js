@@ -33,11 +33,35 @@ function index(req,res)
 }
 function home(req,res)
 {
-    var params = {
-        user: req.user,
-        session_key: req.cookies.session_key
-    };
-    res.render('home',params);
+    var sql = "\
+SELECT user.user_id,user.email,user.display_name,user.is_admin,user.current_stream_node_id \
+FROM user \
+WHERE user_id = ? \
+";
+
+    db.queryFromPool(sql,req.user.user_id,function(err,results)
+    {
+        if( err )
+        {
+            res.redirect('/fail');
+        }
+        else
+        {
+            if( results.length > 0 )
+            {
+                var params = {
+                    user: results[0],
+                    session_key: req.cookies.session_key
+                };
+                res.render('home',params);
+            }
+            else
+            {
+                res.redirect('/fail');
+            }
+        }
+    });
+
 }
 function fail(req,res)
 {

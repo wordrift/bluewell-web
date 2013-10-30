@@ -536,7 +536,7 @@ function makePages(story)
                     {
                         new_last_child.addClass(last_classes);
                     }
-                    for( i = 0 ; i < words.length ; ++i )
+                    for( i = 1 ; i <= words.length ; ++i )
                     {
                         var curr_page = words.slice(0,i).join(' ');
                         new_last_child.html(curr_page);
@@ -565,6 +565,7 @@ function makePages(story)
                     }
                     else
                     {
+                        console.log("On no, not here!");
                     }
                 }
                 else

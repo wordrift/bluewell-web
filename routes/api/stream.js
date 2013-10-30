@@ -9,7 +9,53 @@ exports.getStream = function(req,res)
     res.header("Cache-Control", "no-cache, no-store, must-revalidate");
     res.header("Pragma", "no-cache");
     
-    getStream(user,function(err,results)
+    if( req.param('extend_stream') )
+    {
+        extendAndReturnStream(req,res);
+    }
+    else
+    {
+        getStream(user,function(err,results)
+        {
+            if( err )
+            {
+                res.send(500,err);
+            }
+            else
+            {
+                var node_list = results;
+                var unread_count = 0;
+
+                if( node_list.length > 0 )
+                {
+                    for( var i = node_list.length - 1 ; i > 0  ; --i )
+                    {
+                        var node = node_list[i];
+                        if( node.max_word > 0 )
+                        {
+                            break;
+                        }
+                        unread_count++;
+                    }
+                }
+                if( unread_count > 10 )
+                {
+                    res.send(node_list);
+                }
+                else
+                {
+                    extendAndReturnStream(req,res);
+                }
+            }
+        });
+    }
+};
+
+function extendAndReturnStream(req,res)
+{
+    var user = req.user;
+    
+    extendStream(user,function(err)
     {
         if( err )
         {
@@ -17,52 +63,20 @@ exports.getStream = function(req,res)
         }
         else
         {
-            var node_list = results;
-            var unread_count = 0;
-
-            if( node_list.length > 0 )
+            getStream(user,function(err,results)
             {
-              
-                for( var i = 0 ; i < node_list.length ; ++i )
+                if( err )
                 {
-                    var node = node_list[i];
-                    if( node.max_word == 0 )
-                    {
-                        unread_count++;
-                    }
+                    res.send(500,err);
                 }
-            }
-            if( unread_count >= 10 )
-            {
-                res.send(node_list);
-            }
-            else
-            {
-                extendStream(user,function(err)
+                else
                 {
-                    if( err )
-                    {
-                        res.send(500,err);
-                    }
-                    else
-                    {
-                        getStream(user,function(err,results)
-                        {
-                            if( err )
-                            {
-                                res.send(500,err);
-                            }
-                            else
-                            {
-                                res.send(results);
-                            }
-                        });
-                    }
-                });
-            }
+                    res.send(results);
+                }
+            });
         }
     });
-};
+}
 
 function getStream(user,callback)
 {

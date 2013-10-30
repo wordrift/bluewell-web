@@ -35,11 +35,23 @@ function streamSaveNodes()
     }
 }
 
-function streamUpdate()
+function streamUpdate(extend_stream)
 {
+    if( g_is_syncing )
+    {
+        console.log("Stream syncing, so no update.");
+    }
+    g_is_syncing = true;
+    
+    var url = "/api/1/stream?";
+    if( extend_stream )
+    {
+        url += "extend_stream=true&"
+    }
+
     jQuery.ajax({
         type: 'GET',
-        url: '/api/1/stream',
+        url: url,
         dataType: 'json',
         success: function(data)
         {
@@ -62,24 +74,32 @@ function streamUpdate()
                     g_current_stream_index = 0;
                 }
             }
-                
+            g_is_syncing = false;
             streamSaveNodes();
             prefetchStories();
         },
         error: function()
         {
             console.log("Failed to get stream data.");
+            g_is_syncing = false;
         }
     });
 }
 var g_is_syncing = false;
-function streamSyncNodes()
+function streamSyncNodes(done)
 {
+    if( !done )
+    {
+        done = function() {};
+    }
+
     if( g_is_syncing )
     {
         console.log("syncing in progress, skipping");
+        done(true);
         return;
     }
+
     g_is_syncing = true;
 
     var modified_list = [];
@@ -117,18 +137,20 @@ function streamSyncNodes()
                     
                 g_is_syncing = false;
                 // call ourselves to sync anything modified while we were running
-                streamSyncNodes();
+                streamSyncNodes(done);
             },
             error: function()
             {
                 console.log("Failed to sync stream data.");
                 g_is_syncing = false;
+                done(true);
             }
         });
     }
     else
     {
         g_is_syncing = false;
+        done(false);
     }
 }
 
@@ -349,6 +371,10 @@ function streamNext()
     {
         g_current_stream_index++;
     }
+    if( g_current_stream_index + 10 > g_stream_node_list.length )
+    {
+        streamExtend();
+    }
 }
 function streamFastForward()
 {
@@ -423,4 +449,27 @@ function streamModifyCurrentNode(props)
         streamSaveNodes();
         streamSyncNodes();
     }
+}
+
+function streamExtend()
+{
+    streamSyncNodes(function(err)
+    {
+        if( err )
+        {
+            window.setTimeout(1000,streamExtend);
+        }
+        else
+        {
+            if( g_is_syncing )
+            {
+                console.log("Should be impossible?!");
+            }
+            else
+            {
+                g_user.current_stream_node_id = g_stream_node_list[g_current_stream_index].stream_node_id;
+                streamUpdate(true);
+            }
+        }
+    });
 }

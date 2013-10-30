@@ -59,22 +59,19 @@ function extendAndReturnStream(req,res)
     {
         if( err )
         {
-            res.send(500,err);
+            console.log("Non fatal error extending stream: " + err);
         }
-        else
+        getStream(user,function(err,results)
         {
-            getStream(user,function(err,results)
+            if( err )
             {
-                if( err )
-                {
-                    res.send(500,err);
-                }
-                else
-                {
-                    res.send(results);
-                }
-            });
-        }
+                res.send(500,err);
+            }
+            else
+            {
+                res.send(results);
+            }
+        });
     });
 }
 
@@ -84,12 +81,10 @@ function getStream(user,callback)
     
     var sql = "";
     sql += "\
-SELECT stream_node.*,user_rating.rating,AVG(ur2.rating) AS avg_rating \
+SELECT stream_node.*,user_rating.rating \
 FROM stream_node \
 LEFT JOIN user_rating ON user_rating.user_id = stream_node.user_id AND user_rating.story_id = stream_node.story_id \
-LEFT JOIN user_rating AS ur2 ON ur2.story_id = stream_node.story_id \
 WHERE stream_node.user_id = ? \
-GROUP BY ur2.story_id \
 ORDER BY stream_node.story_order ASC \
 ";
     db.queryFromPool(sql,user_id,callback);

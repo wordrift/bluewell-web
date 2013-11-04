@@ -155,9 +155,11 @@ function fixup_story_text(req,res)
                 var story = results[0];
                 var text = story.text;
                 var new_text = cleanHTML(text);
+                var author_notes = cleanHTML(story.author_notes);
                 
                 var updates = {
                     text: new_text,
+                    author_notes: author_notes
                 };
                 
                 var sql = "UPDATE story SET ? WHERE story_id = ?";

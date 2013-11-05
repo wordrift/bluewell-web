@@ -2,6 +2,26 @@
 @iphone_blue: #007aff;
 @icon_inactive: #aaa;
 
+.single_line {
+    margin-left: 10px;
+    margin-right: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    @media (min-width:700px) {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    @media (min-width:800px) {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+    @media (min-width:1100px) {
+        margin-left: 60px;
+        margin-right: 60px;
+    }
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -139,25 +159,7 @@ body {
                 font-weight: lighter;
             }
             
-            .single_line {
-                margin-left: 10px;
-                margin-right: 10px;
-                overflow: hidden;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                @media (min-width:700px) {
-                    margin-left: 20px;
-                    margin-right: 20px;
-                }
-                @media (min-width:800px) {
-                    margin-left: 30px;
-                    margin-right: 30px;
-                }
-                @media (min-width:1100px) {
-                    margin-left: 60px;
-                    margin-right: 60px;
-                }
-            }
+            
             .top_line {
                 padding-bottom: 8px;
                 text-align: left;
@@ -183,9 +185,11 @@ body {
                     }
                     text-align: center;
                     text-transform: capitalize;
+                    .single_line;
                 }
                 .story_author_one {
                     text-align: center;
+                    .single_line;
                 }
             }
             .rating_box {
@@ -579,6 +583,7 @@ body {
             }
             text-align: center;
             text-transform: capitalize;
+            .single_line;
         }
         .story_author_one {
             margin-top: 6px;
@@ -589,6 +594,7 @@ body {
                 font-weight: lighter;
             }
             text-align: center;
+            .single_line;
         }
         
         .stars {

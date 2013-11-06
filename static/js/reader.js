@@ -553,7 +553,7 @@ function makePages(story)
                         new_last_child.remove();
                         full_story_col.prepend(last_child);
                     }
-                    else if( i != words.length )
+                    else if( i <= words.length )
                     {
                         var curr_page = words.slice(0,i).join(' ');
                         new_last_child.html(curr_page);

@@ -12,6 +12,7 @@ var db = require('./db.js');
 var escape_html = require('escape-html');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var user = require('./user.js');
 
 passport.use(new FacebookStrategy(
@@ -20,9 +21,24 @@ passport.use(new FacebookStrategy(
         clientSecret: config.fb.app_secret,
         callbackURL: config.fb.callback_url
     },
-    function(accessToken, refreshToken, profile, done)
+    function(accessToken,refreshToken,profile,done)
     {
         user.facebookCreateOrUpdate(accessToken,profile,done);
+    }
+));
+passport.use(new GoogleStrategy(
+    {
+        clientID: config.google.app_id,
+        clientSecret: config.google.app_secret,
+        callbackURL: config.google.callback_url
+    },
+    function(accessToken,refreshToken,profile,done)
+    {
+        console.log("accessToken:");
+        console.log(accessToken);
+        console.log("profile:");
+        console.log(profile);
+        user.googleCreateOrUpdate(accessToken,profile,done);
     }
 ));
 
@@ -57,7 +73,7 @@ if( app.get('env') == 'development' )
 api.addRoutes(app,'/api/1');
 pages.addRoutes(app,'');
 
-var scope = [
+var fb_scope = [
     'email',
     'user_birthday',
     'user_status',
@@ -65,8 +81,7 @@ var scope = [
     'user_location',
     'user_likes'
 ];
-app.get('/auth/facebook',passport.authenticate('facebook',{ session: false, scope: scope }));
-
+app.get('/auth/facebook',passport.authenticate('facebook',{ session: false, scope: fb_scope }));
 app.get('/auth/facebook/callback',function(req, res, next)
 {
     passport.authenticate('facebook',{ session: false }, function(err, user, info)
@@ -82,6 +97,34 @@ app.get('/auth/facebook/callback',function(req, res, next)
         }
     })(req, res, next);
 });
+
+var google_scope = [
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/userinfo.email'
+];
+app.get('/auth/google',passport.authenticate('google',{ session: false, scope: google_scope }));
+app.get('/auth/google/callback',function(req, res, next)
+{
+    passport.authenticate('google',{ session: false }, function(err, user, info)
+    {
+        if( err )
+        {
+            res.redirect('/fail');
+        }
+        else
+        {
+            res.cookie('session_key',user.session_key,{ maxAge: 10*365*24*60*60*1000, httpOnly: true });
+            res.redirect('/home');
+        }
+    })(req, res, next);
+});
+
+app.get('/logout',function(req,res)
+{
+    res.clearCookie('session_key');
+    res.redirect('/');
+});
+
 
 http.createServer(app).listen(app.get('port'), function()
 {

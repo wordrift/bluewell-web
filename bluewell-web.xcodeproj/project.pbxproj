@@ -36,6 +36,8 @@
 		2D9A293017FF39EC00F0FDEC /* frag_ga.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = frag_ga.html; sourceTree = "<group>"; };
 		2DB0F14C181460DB005F5964 /* story.ejs */ = {isa = PBXFileReference; lastKnownFileType = text; path = story.ejs; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.html; };
 		2DB0F14D1814C861005F5964 /* end_story_page.ejs */ = {isa = PBXFileReference; lastKnownFileType = text; path = end_story_page.ejs; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.html; };
+		2DCAD6501830587F00FB8CF8 /* privacy.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = privacy.html; sourceTree = "<group>"; };
+		2DCAD6511830588800FB8CF8 /* tos.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = tos.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -146,10 +148,12 @@
 			children = (
 				2D22A63517EFF3B900E19532 /* index.html */,
 				2D9A292D17F1E3B900F0FDEC /* home.html */,
-				2D9A292B17F1E1EF00F0FDEC /* waitlist.html */,
-				2D9A292C17F1E1FA00F0FDEC /* fail.html */,
 				2D9A292F17F39AFD00F0FDEC /* frag_reader.html */,
 				2D9A293017FF39EC00F0FDEC /* frag_ga.html */,
+				2D9A292B17F1E1EF00F0FDEC /* waitlist.html */,
+				2D9A292C17F1E1FA00F0FDEC /* fail.html */,
+				2DCAD6501830587F00FB8CF8 /* privacy.html */,
+				2DCAD6511830588800FB8CF8 /* tos.html */,
 			);
 			path = views;
 			sourceTree = "<group>";

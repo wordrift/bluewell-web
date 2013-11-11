@@ -18,6 +18,7 @@
     "escape-html": "*",
     "passport": "*",
     "passport-facebook": "*",
+    "passport-google-oauth": "*",
     "jsdom": "*"
   }
 }

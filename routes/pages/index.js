@@ -9,6 +9,8 @@ exports.addRoutes = function(app,prefix)
     app.get(prefix + '/home', user.checkSessionForPage, home);
     app.get(prefix + '/waitlist', waitlist);
     app.get(prefix + '/fail', fail);
+    app.get(prefix + '/privacy', privacy);
+    app.get(prefix + '/tos', tos);
     
     admin.addRoutes(app,prefix + '/admin')
 };
@@ -70,4 +72,12 @@ function fail(req,res)
 function waitlist(req,res)
 {
     res.render('waitlist');
+}
+function privacy(req,res)
+{
+    res.render('privacy');
+}
+function tos(req,res)
+{
+    res.render('tos');
 }

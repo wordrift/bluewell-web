@@ -24,68 +24,59 @@ exports.errorHandler = function(err,req,res,next)
     }
 };
 
-exports.facebookCreateOrUpdate = function(accessToken,profile,callback)
+exports.facebookCreateOrUpdate = function(accessToken,profile,done)
 {
+    var fb_id = profile.id;
+    var email = profile.emails[0].value;
+
     var props = {
-        email: profile.emails[0].value,
+        email: email,
         display_name: profile.displayName,
-        fb_id: profile.id,
+        fb_id: fb_id,
         fb_access_token: accessToken,
         fb_json: profile._raw
     };
 
     var sql = "SELECT user_id,is_active FROM user WHERE fb_id = ?";
-    db.queryFromPool(sql,props.fb_id,function(err,results)
+    genericCreateOrUpdate(sql,fb_id,email,props,done);
+}
+
+function genericCreateOrUpdate(find_sql,find_id,email,props,done)
+{
+    db.queryFromPool(find_sql,find_id,function(err,results)
     {
         if( err )
         {
             console.log(err);
-            callback({ user_error: "db" });
+            done({ user_error: "db" });
         }
         else
         {
             if( results.length > 0 )
             {
-                var user_id = results[0].user_id;
-                var is_active = results[0].is_active;
-            
-                var sql = "UPDATE user SET ? WHERE user_id = ?";
-                db.queryFromPool(sql,[props,user_id],function(err,result)
-                {
-                    if( err )
-                    {
-                        console.log("user update failed:");
-                        console.log(err);
-                        callback({ user_error: "db" });
-                    }
-                    else
-                    {
-                        if( is_active )
-                        {
-                            createUserSession(user_id,callback);
-                        }
-                        else
-                        {
-                            console.log("Not active user, updated user information, denying login");
-                            callback({ user_error: "not_active" });
-                        }
-                    }
-                });
+                var user = results[0];
+                updateUser(user,props,done);
             }
             else
             {
-                var sql = "INSERT INTO user SET ?";
-                db.queryFromPool(sql,[props,user_id],function(err,result)
+                var sql = "SELECT user_id,is_active FROM user WHERE email = ?";
+                db.queryFromPool(sql,email,function(err,results)
                 {
                     if( err )
                     {
-                        console.log("user insert failed:");
-                        console.log(err);
-                        callback({ user_error: "db" });
+                        done({ user_error: "db" });
                     }
                     else
                     {
-                        callback({ user_error: "not_active" });
+                        if( results.length > 0 )
+                        {
+                            var user = results[0];
+                            updateUser(user,props,done);
+                        }
+                        else
+                        {
+                            createUser(props,done);
+                        }
                     }
                 });
             }
@@ -93,14 +84,77 @@ exports.facebookCreateOrUpdate = function(accessToken,profile,callback)
     });
 };
 
-function createUserSession(user_id,callback)
+function updateUser(user,props,done)
+{
+    var user_id = user.user_id;
+    var is_active = user.is_active;
+
+    var sql = "UPDATE user SET ? WHERE user_id = ?";
+    db.queryFromPool(sql,[props,user_id],function(err,result)
+    {
+        if( err )
+        {
+            console.log("user update failed:");
+            console.log(err);
+            done({ user_error: "db" });
+        }
+        else
+        {
+            if( is_active )
+            {
+                createUserSession(user_id,done);
+            }
+            else
+            {
+                console.log("Not active user, updated user information, denying login");
+                done({ user_error: "not_active" });
+            }
+        }
+    });
+}
+function createUser(props,done)
+{
+    var sql = "INSERT INTO user SET ?";
+    db.queryFromPool(sql,props,function(err,result)
+    {
+        if( err )
+        {
+            console.log("user insert failed:");
+            console.log(err);
+            done({ user_error: "db" });
+        }
+        else
+        {
+            done({ user_error: "not_active" });
+        }
+    });
+}
+
+exports.googleCreateOrUpdate = function(accessToken,profile,done)
+{
+    var google_id = profile.id;
+    var email = profile.emails[0].value;
+
+    var props = {
+        email: email,
+        display_name: profile.displayName,
+        google_id: google_id,
+        google_access_token: accessToken,
+        google_json: profile._raw
+    };
+
+    var sql = "SELECT user_id,is_active FROM user WHERE google_id = ?";
+    genericCreateOrUpdate(sql,google_id,email,props,done);
+};
+
+function createUserSession(user_id,done)
 {
     crypto.randomBytes(16,function(err, buf)
     {
         if( err )
         {
             console.log("no random?!");
-            callback({ user_error: "random" });
+            done({ user_error: "random" });
         }
         else
         {
@@ -116,11 +170,11 @@ function createUserSession(user_id,callback)
                 {
                     console.log("session key create failed:");
                     console.log(err);
-                    callback({ user_error: "db" });
+                    done({ user_error: "db" });
                 }
                 else
                 {
-                    callback(null,props);
+                    done(null,props);
                 }
             });
         }
@@ -186,7 +240,7 @@ function validCheck(req,res,next,error,failure)
     });
 }
 
-exports.isValidSession = function(req,callback)
+exports.isValidSession = function(req,done)
 {
     var session_key = false;
     if( req.cookies.session_key )
@@ -202,7 +256,7 @@ exports.isValidSession = function(req,callback)
         if( session_key in g_session_map )
         {
             req.user = g_session_map[session_key];
-            callback(false,true);
+            done(false,true);
         }
         else
         {
@@ -220,7 +274,7 @@ WHERE session_key = ? AND user.is_active = 1 \
             {
                 if( err )
                 {
-                    callback(err);
+                    done(err);
                 }
                 else
                 {
@@ -229,12 +283,12 @@ WHERE session_key = ? AND user.is_active = 1 \
                         var user = results[0].user;
                         g_session_map[session_key] = user;
                         req.user = user;
-                        callback(false,true);
+                        done(false,true);
                     }
                     else
                     {
                         console.log("no found user");
-                        callback(false,false);
+                        done(false,false);
                     }
                 }
             });
@@ -242,6 +296,6 @@ WHERE session_key = ? AND user.is_active = 1 \
     }
     else
     {
-        callback(false,false);
+        done(false,false);
     }
 }

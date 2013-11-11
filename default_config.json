@@ -9,5 +9,9 @@
         "app_id": "INSERT",
         "app_secret": "INSERT",
         "callback_url": "INSERT"
+    },
+    "google": {
+        "return_url": "INSERT",
+        "realm": "INSERT"
     }
 }
